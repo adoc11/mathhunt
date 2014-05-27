@@ -2,37 +2,51 @@ using UnityEngine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using NCalc;
+//using NCalc;
 //using System.Random;
 
 public class GameController : MonoBehaviour
 {
-	bool gameOver = false;
-	bool equationSolved = false;
-
+	public bool gameOver;
 	public GameObject EquationPrefab;
-	//public GameObject EqualSignPrefab;
 	public GameObject SymbolPrefab;
 	public GameObject MissingPiecePrefab;
+	public GameObject ScavengerHuntElementPrefab;
 
 	public List<List<string>> eq = new List<List<string>>();
 
 	string _equation; 
 	string _saveEquation;
+	bool equationSolved = false;
+	int numSHSymbols = 20;
+	List<string> tokenizedEquation;
 
 	//Hard coded test equation. This will be replaced with some algorithm which generates equations
-	List<List<string>> A = new List<List<string>>()
+	List<List<string>> generatedEquation;
+	List<Color> possibleColors = new List<Color>()
 	{
-		new List<string>(){"2"}, //first operand
-		new List<string>(){"+", "x"}, //potential operators
-		new List<string>(){"4", "6"}, //potential second operand
-		new List<string>(){"="},
-		new List<string>(){"8"} //answer
+		Color.black,
+		Color.blue,
+		Color.red,
+		Color.yellow,
+		Color.cyan,
+		Color.magenta,
+		Color.green,
+		new Color(255, 165, 0)
 	};
+//	{
+//		new List<string>(){"2"}, //first operand
+//		new List<string>(){"+", "x"}, //potential operators
+//		new List<string>(){"4", "6"}, //potential second operand
+//		new List<string>(){"="},
+//		new List<string>(){"8"} //answer
+//	};
 
 	void Start()
 	{
+		gameOver = false;
 		createEquation();
+		populateScavengerHunt();
 		//generateExpression();
 	}
 
@@ -41,37 +55,22 @@ public class GameController : MonoBehaviour
 	{
 		if(gameOver)
 		{
-			Application.LoadLevel("GameOverScene");
+			Application.LoadLevel("GameOver");
 		}
 		else if(equationSolved)
 		{
-			clearEquation();
+			equationSolved = false;
+			StartCoroutine("WaitToClear");
 		}
 	}
 
-//	Expression generateExpression()
-//	{
-//		int operand1;
-//		int operand2;
-//		List<string> operators = new List<string>() { "+", "-", "*", "/" };
-//		//int result;
-//
-//		System.Random random = new System.Random();
-//
-//		operand1 = random.Next(0, 100);
-//		operand2 = random.Next(0, 100);
-//		string op = operators[random.Next(0, operators.Count)];
-//
-//		string tempEq = operand1.ToString() + op + operand2.ToString();
-//
-//		Expression exp = new Expression();
-//
-//		Debug.Log();
-//
-//		return exp;
-//
-//	}
-
+	IEnumerator WaitToClear()
+	{
+		yield return new WaitForSeconds(2);
+		clearEquation();
+		//createEquation();
+		//populateScavengerHunt();
+	}
 
 
 	public void updateEquation(int inx, string value)
@@ -88,18 +87,19 @@ public class GameController : MonoBehaviour
 	{
 		foreach(GameObject missingPiece in GameObject.FindGameObjectsWithTag("Missing Piece"))
 		{
+			UISprite mp = missingPiece.gameObject.GetComponent<UISprite>();
+			mp.color = Color.black;
 			NGUITools.Destroy(missingPiece.transform.GetChild(0).transform.GetChild(0).gameObject);
 		}
 		_equation = _saveEquation;
-		equationSolved = false;
 
 		eq.Clear();
-		for(int i = 0; i < A.Count; i++)
+		for(int i = 0; i < generatedEquation.Count; i++)
 		{
 			List<string> eqPart = new List<string>();
-			for(int j = 0; j < A[i].Count; j++)
+			for(int j = 0; j < generatedEquation[i].Count; j++)
 			{
-				eqPart.Add(A[i][j]);
+				eqPart.Add(generatedEquation[i][j]);
 			}
 			
 			eq.Add(eqPart);
@@ -114,12 +114,17 @@ public class GameController : MonoBehaviour
 		equationPrefab.transform.localPosition = new Vector3(0, -207, 0);
 		equationPrefab.transform.localScale = new Vector3(1, 1, 1);
 
-		for(int i = 0; i < A.Count; i++)
+		Equation equation = new Equation();
+
+		generatedEquation = equation.Generate();
+		tokenizedEquation = equation.result;
+
+		for(int i = 0; i < generatedEquation.Count; i++)
 		{
 			List<string> eqPart = new List<string>();
-			for(int j = 0; j < A[i].Count; j++)
+			for(int j = 0; j < generatedEquation[i].Count; j++)
 			{
-				eqPart.Add(A[i][j]);
+				eqPart.Add(generatedEquation[i][j]);
 			}
 
 			eq.Add(eqPart);
@@ -133,7 +138,7 @@ public class GameController : MonoBehaviour
 
 		for(int i = 0; i < eq.Count; i++)
 		{
-			if (eq[i].Count == 1)
+			if (!equation.result[i].Contains("{T"))
 			{
 				GameObject symbolPrefab = (GameObject)Instantiate(SymbolPrefab, equationPrefab.transform.position, Quaternion.identity);
 				symbolPrefab.name = symbolPrefab.name + i;
@@ -143,7 +148,10 @@ public class GameController : MonoBehaviour
 
 				symbolPrefab.transform.localPosition = new Vector3(startPosX, 0, 0);
 
-				symbolValue.text = eq[i][0];
+				if (eq[i][0] == "*")
+					symbolValue.text = "x";
+				else
+					symbolValue.text = eq[i][0];
 
 				elementWidth = symbolValue.width;
 
@@ -219,9 +227,72 @@ public class GameController : MonoBehaviour
 	{
 		eq = eq.Replace("x", "*");
 
-		Expression expr = new Expression(eq);
+		NCalc.Expression expr = new NCalc.Expression(eq);
 
 		return (bool)expr.Evaluate();
+	}
+
+//	void createRandomSymbol()
+//	{
+//		for(int i = generatedEquation.Count; i < numSHSymbols; i++)
+//		{
+//			scavHuntPrefab = (GameObject)Instantiate(ScavengerHuntElementPrefab, scavHuntBoundingBox.transform.position, Quaternion.identity);
+//			scavHuntPrefab.name = scavHuntPrefab.name + i;
+//			scavHuntPrefab.transform.parent = GameObject.Find("ScavengerHuntPanel").transform;
+//			scavHuntPrefab.transform.localScale = Vector3.one;
+//
+//			UILabel scavHuntValue = GameObject.Find(scavHuntPrefab.name).GetComponent<UILabel>();
+//
+//			System.Random rand = new Random();
+//
+//			List<string> ops = new List<string>(){ "+","-","/","x" };
+//			
+//			int inx = rand.Next(0, possibleColors.Count);
+//			scavHuntValue.color = possibleColors[inx];
+//			
+//			scavHuntPrefab.transform.localPosition = new Vector3(UnityEngine.Random.Range(boundingBoxStartPosX, boundingBoxEndPosX), UnityEngine.Random.Range(boundingBoxStartPosY, boundingBoxEndPosY), 0.0f);
+//		}
+//	}
+
+	void populateScavengerHunt()
+	{
+		GameObject scavHuntBoundingBox = GameObject.Find("scavengerHuntBoundingBox");
+		float boundingBoxStartPosX = scavHuntBoundingBox.transform.localPosition.x - (scavHuntBoundingBox.transform.localScale.x / 2);//- scavHuntBoundingBox.transform.localPosition.x / 2;
+		float boundingBoxEndPosX = scavHuntBoundingBox.transform.localPosition.x + (scavHuntBoundingBox.transform.localScale.x / 2); //scavHuntBoundingBox.transform.localPosition.x / 2;
+
+		float boundingBoxStartPosY = scavHuntBoundingBox.transform.localPosition.y - (scavHuntBoundingBox.transform.localScale.y / 2);
+		float boundingBoxEndPosY =  scavHuntBoundingBox.transform.localPosition.y + (scavHuntBoundingBox.transform.localScale.y / 2);
+
+		int k = 0;
+		GameObject scavHuntPrefab;
+		for(int i = 0; i < tokenizedEquation.Count; i++)
+		{
+			if(tokenizedEquation[i].Contains("{T"))
+			{
+				for(int j = 0; j < generatedEquation[i].Count; j++)
+				{
+					scavHuntPrefab = (GameObject)Instantiate(ScavengerHuntElementPrefab, scavHuntBoundingBox.transform.position, Quaternion.identity);
+					scavHuntPrefab.name = scavHuntPrefab.name + k;
+					scavHuntPrefab.transform.parent = GameObject.Find("ScavengerHuntPanel").transform;
+					scavHuntPrefab.transform.localScale = Vector3.one;
+					
+					UILabel scavHuntValue = GameObject.Find(scavHuntPrefab.name).GetComponent<UILabel>();
+
+					System.Random rand = new System.Random();
+
+					if (generatedEquation[i][j] == "*")
+						scavHuntValue.text = "x";
+					else
+						scavHuntValue.text = generatedEquation[i][j];
+
+					int inx = rand.Next(0, possibleColors.Count);
+					scavHuntValue.color = possibleColors[inx];
+
+					scavHuntPrefab.transform.localPosition = new Vector3(UnityEngine.Random.Range(boundingBoxStartPosX, boundingBoxEndPosX), UnityEngine.Random.Range(boundingBoxStartPosY, boundingBoxEndPosY), 0.0f);
+					k +=1;
+				}
+			}
+		}
 	}
 
 }

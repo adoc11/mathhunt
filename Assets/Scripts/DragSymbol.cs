@@ -25,6 +25,9 @@ public class DragSymbol : UIDragDropItem {
 			int inx = Convert.ToInt32(surface.gameObject.name.Substring(startInx));
 			
 			string value = gameObject.GetComponent<UILabel>().text;
+
+			UISprite mp = surface.gameObject.GetComponent<UISprite>();
+
 			
 			if (gc.eq[inx].Contains(value))
 			{
@@ -33,10 +36,12 @@ public class DragSymbol : UIDragDropItem {
 				mCollider.enabled = false;
 				gc.updateEquation(inx, value);
 				gc.validateEquation();
+				mp.color = Color.green;
 			}
 			else
 			{
 				gameObject.transform.position = objectPos;
+				mp.color = Color.black;
 				surface = null;
 			}
 		}

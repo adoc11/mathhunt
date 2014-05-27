@@ -40,32 +40,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   material: {fileID: 2100000, guid: f7e1f6ad8a44ec74da3136215af204a8, type: 2}
   mSprites:
-  - name: 500px-Mute_Icon.svg
-    x: 1538
-    y: 1548
-    width: 500
-    height: 500
-    borderLeft: 0
-    borderRight: 0
-    borderTop: 0
-    borderBottom: 0
-    paddingLeft: 0
-    paddingRight: 0
-    paddingTop: 0
-    paddingBottom: 0
-  - name: 500px-Speaker_Icon.svg
-    x: 0
-    y: 458
-    width: 500
-    height: 500
-    borderLeft: 0
-    borderRight: 0
-    borderTop: 0
-    borderBottom: 0
-    paddingLeft: 0
-    paddingRight: 0
-    paddingTop: 0
-    paddingBottom: 0
   - name: back
     x: 1025
     y: 1536
@@ -80,10 +54,62 @@ MonoBehaviour:
     paddingTop: 0
     paddingBottom: 0
   - name: help
-    x: 0
-    y: 199
+    x: 1538
+    y: 1576
     width: 258
     height: 258
+    borderLeft: 0
+    borderRight: 0
+    borderTop: 0
+    borderBottom: 0
+    paddingLeft: 0
+    paddingRight: 0
+    paddingTop: 0
+    paddingBottom: 0
+  - name: Math_Hunt_Audio_Mute
+    x: 0
+    y: 764
+    width: 338
+    height: 194
+    borderLeft: 0
+    borderRight: 0
+    borderTop: 0
+    borderBottom: 0
+    paddingLeft: 0
+    paddingRight: 0
+    paddingTop: 0
+    paddingBottom: 0
+  - name: Math_Hunt_Audio_Play
+    x: 1538
+    y: 1835
+    width: 320
+    height: 213
+    borderLeft: 0
+    borderRight: 0
+    borderTop: 0
+    borderBottom: 0
+    paddingLeft: 0
+    paddingRight: 0
+    paddingTop: 0
+    paddingBottom: 0
+  - name: Math_Hunt_Pause
+    x: 339
+    y: 809
+    width: 101
+    height: 149
+    borderLeft: 0
+    borderRight: 0
+    borderTop: 0
+    borderBottom: 0
+    paddingLeft: 0
+    paddingRight: 0
+    paddingTop: 0
+    paddingBottom: 0
+  - name: Math_Hunt_Play
+    x: 1859
+    y: 1851
+    width: 172
+    height: 197
     borderLeft: 0
     borderRight: 0
     borderTop: 0
@@ -105,11 +131,11 @@ MonoBehaviour:
     paddingRight: 0
     paddingTop: 0
     paddingBottom: 0
-  - name: media_pause
-    x: 513
-    y: 1215
-    width: 256
-    height: 256
+  - name: menu-alt-512
+    x: 0
+    y: 959
+    width: 512
+    height: 512
     borderLeft: 0
     borderRight: 0
     borderTop: 0
@@ -118,11 +144,76 @@ MonoBehaviour:
     paddingRight: 0
     paddingTop: 0
     paddingBottom: 0
-  - name: menu-alt-512
+  - name: title_screen_Math_Hunt_equal
+    x: 1797
+    y: 1616
+    width: 246
+    height: 218
+    borderLeft: 0
+    borderRight: 0
+    borderTop: 0
+    borderBottom: 0
+    paddingLeft: 0
+    paddingRight: 0
+    paddingTop: 0
+    paddingBottom: 0
+  - name: title_screen_Math_Hunt_number2
     x: 0
-    y: 959
-    width: 512
-    height: 512
+    y: 544
+    width: 216
+    height: 219
+    borderLeft: 0
+    borderRight: 0
+    borderTop: 0
+    borderBottom: 0
+    paddingLeft: 0
+    paddingRight: 0
+    paddingTop: 0
+    paddingBottom: 0
+  - name: title_screen_Math_Hunt_number4
+    x: 181
+    y: 327
+    width: 162
+    height: 216
+    borderLeft: 0
+    borderRight: 0
+    borderTop: 0
+    borderBottom: 0
+    paddingLeft: 0
+    paddingRight: 0
+    paddingTop: 0
+    paddingBottom: 0
+  - name: title_screen_Math_Hunt_number7
+    x: 0
+    y: 66
+    width: 162
+    height: 250
+    borderLeft: 0
+    borderRight: 0
+    borderTop: 0
+    borderBottom: 0
+    paddingLeft: 0
+    paddingRight: 0
+    paddingTop: 0
+    paddingBottom: 0
+  - name: title_screen_Math_Hunt_number9
+    x: 0
+    y: 317
+    width: 180
+    height: 226
+    borderLeft: 0
+    borderRight: 0
+    borderTop: 0
+    borderBottom: 0
+    paddingLeft: 0
+    paddingRight: 0
+    paddingTop: 0
+    paddingBottom: 0
+  - name: title_screen_Math_Hunt_plus
+    x: 217
+    y: 551
+    width: 218
+    height: 212
     borderLeft: 0
     borderRight: 0
     borderTop: 0
