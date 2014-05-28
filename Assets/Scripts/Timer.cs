@@ -3,7 +3,6 @@ using System.Collections;
 
 public class Timer : MonoBehaviour
 {
-	//public GUIText timerTexture;
 	public UILabel label;
 	public float timeInSeconds;
 	private string formatString;
