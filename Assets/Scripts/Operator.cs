@@ -1,5 +1,7 @@
 using UnityEngine;
+using System;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Operator : MonoBehaviour
 {
@@ -18,12 +20,12 @@ public class Operator : MonoBehaviour
 
 	public Operator(){
 		System.Random rand = new System.Random();
-		value = ops[rand.Next(0,ops.Count())];
+		value = ops[rand.Next(0,ops.Count)];
 	}
 
 	public string getValue(){
 		if(missing){
-			return "_";
+			return "{T}";
 		}
 		else{
 			return value;

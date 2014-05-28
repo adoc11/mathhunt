@@ -1,5 +1,8 @@
 using UnityEngine;
+using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 public class Constant : MonoBehaviour
 {
@@ -22,7 +25,7 @@ public class Constant : MonoBehaviour
 
 	public Constant(List<int> options){
 		System.Random rand = new System.Random();
-		value = options[rand.Next(0,options.Count())];
+		value = options[rand.Next(0,options.Count)];
 		strValue = value.ToString();
 	}
 
@@ -32,7 +35,7 @@ public class Constant : MonoBehaviour
 
 	public string getStrValue(){
 		if(missing){
-			return "_";
+			return "{T}";
 		}
 		else{
 			return strValue;
