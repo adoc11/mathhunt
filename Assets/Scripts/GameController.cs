@@ -265,6 +265,7 @@ public class GameController : MonoBehaviour
 
 		int k = 0;
 		GameObject scavHuntPrefab;
+		System.Random rand = new System.Random();
 		for(int i = 0; i < tokenizedEquation.Count; i++)
 		{
 			if(tokenizedEquation[i].Contains("{T"))
@@ -277,8 +278,6 @@ public class GameController : MonoBehaviour
 					scavHuntPrefab.transform.localScale = Vector3.one;
 					
 					UILabel scavHuntValue = GameObject.Find(scavHuntPrefab.name).GetComponent<UILabel>();
-
-					System.Random rand = new System.Random();
 
 					if (generatedEquation[i][j] == "*")
 						scavHuntValue.text = "x";
@@ -293,7 +292,36 @@ public class GameController : MonoBehaviour
 				}
 			}
 		}
-	}
 
+		System.Random rand2 = new System.Random();
+		for(int i = GameObject.FindGameObjectsWithTag("ScavHuntElement").Length; i < numSHSymbols; i++)
+		{
+			scavHuntPrefab = (GameObject)Instantiate(ScavengerHuntElementPrefab, scavHuntBoundingBox.transform.position, Quaternion.identity);
+			scavHuntPrefab.name = scavHuntPrefab.name + (i+1);
+			scavHuntPrefab.transform.parent = GameObject.Find("ScavengerHuntPanel").transform;
+			scavHuntPrefab.transform.localScale = Vector3.one;
+			
+			UILabel scavHuntValue = GameObject.Find(scavHuntPrefab.name).GetComponent<UILabel>();
+			
+			List<string> randomChoices = new List<string>();
+			for(int j = 0; j <= 100; j++)
+			{
+				randomChoices.Add(j.ToString());
+			}
+
+			randomChoices.Add("+");
+			randomChoices.Add("-");
+			randomChoices.Add("x");
+			randomChoices.Add("/");
+
+			scavHuntValue.text = randomChoices[rand2.Next(0, randomChoices.Count)];
+			
+			int inx = rand.Next(0, possibleColors.Count);
+			scavHuntValue.color = possibleColors[inx];
+			
+			scavHuntPrefab.transform.localPosition = new Vector3(UnityEngine.Random.Range(boundingBoxStartPosX, boundingBoxEndPosX), UnityEngine.Random.Range(boundingBoxStartPosY, boundingBoxEndPosY), 0.0f);
+		}
+	}
+	
 }
 
