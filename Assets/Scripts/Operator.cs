@@ -33,18 +33,20 @@ public class Operator : MonoBehaviour
 	}
 
 	public int evaluate(int first, int second){
+		int result = 0;
 		if(value == "+"){
-			return first + second;
+			result = first + second;
 		}
 		else if(value == "-"){
-			return first - second;
+			result = first - second;
 		}
 		else if(value == "*"){
-			return first * second;
+			result = first * second;
 		}
 		else if(value == "/"){
-			return first / second;
+			result = first / second;
 		}
+		return result;
 	}
 }
 

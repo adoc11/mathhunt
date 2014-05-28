@@ -2474,7 +2474,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1107376575}
-  m_LocalRotation: {x: -.0165023748, y: .00816051289, z: -.0882767439, w: .995925844}
+  m_LocalRotation: {x: -.0165023766, y: .00816051383, z: -.0882767513, w: .995925903}
   m_LocalPosition: {x: -.71399498, y: -.338282555, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -2908,7 +2908,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1265726212}
-  m_LocalRotation: {x: .0147097195, y: -.00727403583, z: .0786872283, w: .996764362}
+  m_LocalRotation: {x: .0147097185, y: -.00727403536, z: .0786872283, w: .996764302}
   m_LocalPosition: {x: -.71399498, y: -.162322134, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -4927,7 +4927,7 @@ Transform:
   m_GameObject: {fileID: 2051287727}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: .00333333341, y: .00333333341, z: .00333333341}
+  m_LocalScale: {x: .00328947371, y: .00328947371, z: .00328947371}
   m_Children:
   - {fileID: 881393714}
   m_Father: {fileID: 0}
@@ -5046,6 +5046,7 @@ MonoBehaviour:
   MissingPiecePrefab: {fileID: 100000, guid: eae0a98e2ac83334e836358114b6a1bf, type: 2}
   ScavengerHuntElementPrefab: {fileID: 100000, guid: 45441e91628bf134c947388d9b524182,
     type: 2}
+  eq: []
 --- !u!1 &2082533247
 GameObject:
   m_ObjectHideFlags: 0
