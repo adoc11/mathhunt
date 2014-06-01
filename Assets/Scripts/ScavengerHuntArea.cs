@@ -4,12 +4,11 @@ using System.Collections.Generic;
 
 public class ScavengerHuntArea : MonoBehaviour
 {
-	public GameObject ScavengerHuntElementPrefab;
+	//public GameObject ScavengerHuntElementPrefab;
+	GameObject scavHuntBoundingBox;
 
 	int col;
 	int row;
-
-	string[,] colRows = new string[8, 8];
 
 	System.Random rand = new System.Random();
 
@@ -23,10 +22,18 @@ public class ScavengerHuntArea : MonoBehaviour
 		Color.magenta,
 		Color.green
 	};
+	
+//	public void clearScavHuntArea()
+//	{
+//		foreach(GameObject scavHuntElement in GameObject.FindGameObjectsWithTag("ScavHuntElement"))
+//		{
+//			Destroy(scavHuntElement);
+//		}
+//	}
 
 	public void populateScavHunt(int numSHSymbols)
 	{
-		GameObject scavHuntBoundingBox = GameObject.Find("scavengerHuntBoundingBox");
+		scavHuntBoundingBox = GameObject.Find("scavengerHuntBoundingBox");
 		float boundingBoxStartPosX = scavHuntBoundingBox.transform.localPosition.x - (scavHuntBoundingBox.transform.localScale.x / 2);// - 10;//- scavHuntBoundingBox.transform.localPosition.x / 2;
 		float boundingBoxEndPosX = scavHuntBoundingBox.transform.localPosition.x + (scavHuntBoundingBox.transform.localScale.x / 2) - 10; //scavHuntBoundingBox.transform.localPosition.x / 2;
 		
@@ -34,85 +41,95 @@ public class ScavengerHuntArea : MonoBehaviour
 		float boundingBoxEndPosY =  scavHuntBoundingBox.transform.localPosition.y + (scavHuntBoundingBox.transform.localScale.y / 2) - 10;
 
 		GameObject scavHuntPrefab;
+
+		string[,] colRows = new string[8, 8];
+
+		List<KeyValuePair<string, double>> operators = new List<KeyValuePair<string, double>>()
+		{
+			new KeyValuePair<string, double>("sq", 0.05),
+			new KeyValuePair<string, double>("^", 0.05),
+			new KeyValuePair<string, double>("x", 0.15),
+			new KeyValuePair<string, double>("/", 0.15),
+			new KeyValuePair<string, double>("+", 0.3),
+			new KeyValuePair<string, double>("-", 0.3)
+		};
 		
+		List<KeyValuePair<string, double>> numValues = new List<KeyValuePair<string, double>>();
+		
+		for(int k = 0; k <= 20; k++)
+		{
+			numValues.Add(new KeyValuePair<string, double>(k.ToString(), 0.024)); 
+		}
+		for(int k = 21; k <= 75; k++)
+		{
+			numValues.Add(new KeyValuePair<string, double>(k.ToString(), 0.007)); 
+		}
+		for(int k = 76; k <= 100; k++)
+		{
+			numValues.Add(new KeyValuePair<string, double>(k.ToString(), 0.004)); 
+		}
+		
+		List<string> randomChoices = new List<string>();
+		
+		for(int n = 0; n < 30; n++)
+		{
+			double randValProb = rand.NextDouble();
+			double cumulative = 0.0;
+			
+			string selectedElement = "";
+			
+			for (int j = 0; j < numValues.Count; j++)
+			{
+				cumulative += numValues[j].Value;
+				if (randValProb < cumulative)
+				{
+					selectedElement = numValues[j].Key;
+					break;
+				}
+			}
+			if (selectedElement == "")
+			{
+				selectedElement = numValues[rand.Next(20)].Key;
+			}
+			
+			randomChoices.Add(selectedElement);
+		}
+		
+		for(int n = 0; n < 10; n++)
+		{
+			double randOpProb = rand.NextDouble();
+			double cumulative = 0.0;
+			
+			string selectedElement = "";
+			
+			for (int j = 0; j < operators.Count; j++)
+			{
+				cumulative += operators[j].Value;
+				if (randOpProb < cumulative)
+				{
+					selectedElement = operators[j].Key;
+					break;
+				}
+			}
+			
+			randomChoices.Add(selectedElement);
+		}
+		
+
 		for(int i = 0; i < numSHSymbols; i++)
 		{
-			scavHuntPrefab = (GameObject)Instantiate(ScavengerHuntElementPrefab, scavHuntBoundingBox.transform.position, Quaternion.Euler(0.0f, 0.0f, UnityEngine.Random.Range(-30.0f, 30.0f)));
-			scavHuntPrefab.name = scavHuntPrefab.name + (i+1);
+			//scavHuntPrefab = (GameObject)Instantiate(ScavengerHuntElementPrefab, scavHuntBoundingBox.transform.position, Quaternion.Euler(0.0f, 0.0f, UnityEngine.Random.Range(-30.0f, 30.0f)));
+			//scavHuntPrefab.name = scavHuntPrefab.name + (i+1);
+			scavHuntPrefab = GameObject.Find("shElement"+(i+1).ToString());
 			scavHuntPrefab.transform.parent = GameObject.Find("ScavengerHuntPanel").transform;
 			scavHuntPrefab.transform.localScale = Vector3.one;
 			
 			UILabel scavHuntValue = GameObject.Find(scavHuntPrefab.name).GetComponent<UILabel>();
 
-			List<KeyValuePair<string, double>> operators = new List<KeyValuePair<string, double>>()
-			{
-				new KeyValuePair<string, double>("√", 0.05),
-				new KeyValuePair<string, double>("^", 0.05),
-				new KeyValuePair<string, double>("x", 0.15),
-				new KeyValuePair<string, double>("/", 0.15),
-				new KeyValuePair<string, double>("+", 0.3),
-				new KeyValuePair<string, double>("-", 0.3)
-			};
-
-			List<KeyValuePair<string, double>> numValues = new List<KeyValuePair<string, double>>();
-
-			for(int k = 0; k <= 20; k++)
-			{
-				numValues.Add(new KeyValuePair<string, double>(k.ToString(), 0.024)); 
-			}
-			for(int k = 21; k <= 75; k++)
-			{
-				numValues.Add(new KeyValuePair<string, double>(k.ToString(), 0.007)); 
-			}
-			for(int k = 76; k <= 100; k++)
-			{
-				numValues.Add(new KeyValuePair<string, double>(k.ToString(), 0.004)); 
-			}
-
-			List<string> randomChoices = new List<string>();
-
-			for(int n = 0; n < 30; n++)
-			{
-				double randValProb = rand.NextDouble();
-				double cumulative = 0.0;
-				
-				string selectedElement = "";
-				
-				for (int j = 0; j < numValues.Count; j++)
-				{
-					cumulative += numValues[j].Value;
-					if (randValProb < cumulative)
-					{
-						selectedElement = numValues[j].Key;
-						break;
-					}
-				}
-				
-				randomChoices.Add(selectedElement);
-			}
-
-			for(int n = 0; n < 10; n++)
-			{
-				double randOpProb = rand.NextDouble();
-				double cumulative = 0.0;
-				
-				string selectedElement = "";
-
-				for (int j = 0; j < operators.Count; j++)
-				{
-					cumulative += operators[j].Value;
-					if (randOpProb < cumulative)
-					{
-						selectedElement = operators[j].Key;
-						break;
-					}
-				}
-
-				randomChoices.Add(selectedElement);
-			}
-
+			//scavHuntValue.text = randomChoices[rand.Next(0, randomChoices.Count)];
+			scavHuntValue.text = randomChoices[i];
 			int randPosInx;
-		
+			
 			do
 			{
 				randPosInx = rand.Next(0, 64);
@@ -120,8 +137,6 @@ public class ScavengerHuntArea : MonoBehaviour
 				row = randPosInx / 8;
 				col = randPosInx % 8;
 			} while(!string.IsNullOrEmpty(colRows[row, col]));
-		
-			scavHuntValue.text = randomChoices[rand.Next(0, randomChoices.Count)];
 
 			colRows[row,col] = scavHuntValue.text;
 
@@ -132,7 +147,9 @@ public class ScavengerHuntArea : MonoBehaviour
 			
 			int inx = rand.Next(0, possibleColors.Count);
 			scavHuntValue.color = possibleColors[inx];
-			
+			scavHuntValue.alpha = 255;
+
+			scavHuntPrefab.transform.localRotation = Quaternion.Euler(0.0f, 0.0f, UnityEngine.Random.Range(-25.0f, 25.0f));
 			scavHuntPrefab.transform.localPosition = symbolPos;
 		}
 	}

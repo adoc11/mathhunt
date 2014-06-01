@@ -2,29 +2,24 @@ using UnityEngine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 //using NCalc;
 //using System.Random;
 
 public class GameController : MonoBehaviour
 {
 	public bool gameOver;
-	//public GameObject EquationPrefab;
 	public GameObject SymbolPrefab;
-	//public GameObject MissingPiecePrefab;
 	public UILabel ScoreLabel;
 	public int numSHSymbols = 40;
 	public GameObject startingSlot;
+	public bool equationSolved = false;
 
 	List<GameObject> slots;
 	string _equation; 
-	bool equationSolved = false;
-	//GameObject equationPrefab;
+	
 	int score { get; set; }
 	System.Random rand = new System.Random();
-	
-	//Hard coded test equation. This will be replaced with some algorithm which generates equations
-	List<List<string>> generatedEquation;
-	List<string> tokenizedEquation;
 
 	ScavengerHuntArea scavHunt;
 
@@ -47,104 +42,149 @@ public class GameController : MonoBehaviour
 		{
 			Application.LoadLevel("GameOver");
 		}
-		else if(equationSolved)
-		{
-			equationSolved = false;
-			score += 10;
-			ScoreLabel.text = "Score: " + score;
-			StartCoroutine("WaitToClear");
-		}
+//		else if(equationSolved)
+//		{
+//			Transform tr = null;
+//			equationSolved = false;
+//			score += 10;
+//			ScoreLabel.text = "Score: " + score;
+//
+//			foreach(GameObject slot in slots)
+//			{
+//				UISprite mp = slot.gameObject.transform.parent.gameObject.GetComponent<UISprite>();
+//				tr = slot.transform.GetComponentsInChildren<Transform>().FirstOrDefault(t => t.name.Contains("shElement") || t.name.Contains("symbol"));
+//				
+//				if(tr != null)
+//				{
+//					//mp.color = new Color(.812f, 1.0f, .812f);
+//					mp.color = new Color(0.0f, 1.0f, 0.0f, .1f);
+//				}
+//
+//			}
+
+			//getNextEquation();
+
+
+			//StartCoroutine("WaitToClear");
+		//}
+	}
+
+	public void getNextEquation()
+	{
+		clearEquation();
+		//scavHunt.clearScavHuntArea();
+		scavHunt.populateScavHunt(numSHSymbols);
+		generateRandomStartingValue();
 	}
 	
 	IEnumerator WaitToClear()
 	{
 		yield return new WaitForSeconds(2);
-		//clearEquation();
-//		if(numAnswers < 1)
-//		{
-//			generatedEquation.Clear();
-//			tokenizedEquation.Clear();
-//			destroyPrefabs();
-//			createEquation();
-//			populateScavengerHunt();
-//		}
+		clearEquation();
+		//scavHunt.clearScavHuntArea();
+		//scavHunt.populateScavHunt(numSHSymbols);
+		generateRandomStartingValue();
 	}
-	
-	
-//	public void updateEquation(int inx, string value)
-//	{
-//		int i = _equation.IndexOf("{T" + inx + "}");
-//		
-//		if (i > -1)
-//		{
-//			_equation = _equation.Remove(i, 4).Insert(i, value);
-//		}
-//	}
-	
-//	void clearEquation()
-//	{
-//		foreach(GameObject missingPiece in GameObject.FindGameObjectsWithTag("Missing Piece"))
-//		{
-//			UISprite mp = missingPiece.gameObject.GetComponent<UISprite>();
-//			mp.color = Color.black;
-//			NGUITools.Destroy(missingPiece.transform.GetChild(0).transform.GetChild(0).gameObject);
-//		}
-//		_equation = _saveEquation;
-//		
-//		eq.Clear();
-//		for(int i = 0; i < generatedEquation.Count; i++)
-//		{
-//			List<string> eqPart = new List<string>();
-//			for(int j = 0; j < generatedEquation[i].Count; j++)
-//			{
-//				eqPart.Add(generatedEquation[i][j]);
-//			}
-//			
-//			eq.Add(eqPart);
-//		}
-//	}
 
-//	void destroyPrefabs()
-//	{
-//		Destroy (GameObject.Find(equationPrefab.name));
-//
-//		foreach(GameObject scavHuntElement in GameObject.FindGameObjectsWithTag("ScavHuntElement"))
-//		{
-//			Destroy (scavHuntElement);
-//		}
-//	}
+	void clearEquation()
+	{
+		Transform tr = null;
+		foreach(GameObject slot in slots)
+		{
+			UISprite mp = slot.gameObject.transform.parent.gameObject.GetComponent<UISprite>();
+			//tr = slot.transform.GetComponentsInChildren<Transform>().FirstOrDefault(t => t.name.Contains("shElement") || t.name.Contains("symbol"));
+			tr = slot.transform.GetComponentsInChildren<Transform>().FirstOrDefault(t => t.name.Contains("symbol"));
+
+			if(tr != null)
+			{
+				mp.color = new Color(0.0f, 0.0f, 0.0f, .1f);
+				//UILabel l = tr.gameObject.GetComponent<UILabel>();
+				//l.text = "";
+				Destroy(tr.gameObject);
+			}
+		}
+	}
+
+
 	
+
 	void generateRandomStartingValue()
 	{	
-		List<GameObject> slots = new List<GameObject>();
+		slots = new List<GameObject>();
 
-		foreach(GameObject s in GameObject.FindGameObjectsWithTag("Slot"))
+		for(int i = 1; i <= 9; i++)
 		{
-			slots.Add(s);
+			if(i != 8)
+				slots.Add(GameObject.Find("Grid" + i.ToString()));
 		}
 
-		startingSlot = slots[rand.Next(0, slots.Count - 1)];
 
-		if(startingSlot.name == "slot8")
-		{
-			startingSlot = slots[8];
-		}
+		startingSlot = slots[rand.Next(0, slots.Count)];
 
 		GameObject symbolPrefab = (GameObject)Instantiate(SymbolPrefab, startingSlot.transform.position, Quaternion.identity);
+		symbolPrefab.name = "symbol" + Guid.NewGuid().ToString();
+
 		symbolPrefab.transform.parent = startingSlot.transform;
 		
 		UILabel symbolValue = GameObject.Find(symbolPrefab.name).GetComponent<UILabel>();
 
 		symbolValue.text = rand.Next(0, 21).ToString();
-	
-		
-		//symbolPrefab.transform.localPosition = new Vector3(startPosX, 0, 0);
-			
+		symbolValue.alpha = 255;
 	}
 
-//	public bool validateEquation()
-//	{
-//	}
+	public bool validateEquation()
+	{
+		Transform tr = null;
+		UILabel scavHuntLabel;
+		_equation = "";
+		for(int i = 0; i < slots.Count; i++)
+		{
+
+			tr = slots[i].transform.GetComponentsInChildren<Transform>().FirstOrDefault(t => t.name.Contains("shElement") || t.name.Contains("symbol"));
+			if (tr != null)
+			{
+				scavHuntLabel = tr.gameObject.GetComponent<UILabel>();
+				_equation += scavHuntLabel.text + " ";
+			}
+
+			if(i == 6)
+			{
+				_equation += "=";
+			}
+
+		}
+
+		//Debug.Log(_equation);
+
+		return verifySymbols(_equation);
+	}
+
+	bool verifySymbols(string eq)
+	{
+		bool result = false;
+		int startInx = eq.IndexOf("√")+2;
+		int endInx = eq.IndexOf(" ", startInx);
+		string sqrtVal = eq.Substring(startInx, endInx - startInx);
+		eq = eq.Replace("x", "*");
+		eq = eq.Replace("√", "Sqrt(" + sqrtVal + ")");
+
+		NCalc.Expression expr;
+
+		try
+		{
+			if(eq.IndexOf("=") != eq.Length - 1)
+			{
+				expr = new NCalc.Expression(eq);
+				result = (bool)expr.Evaluate();
+			}
+		}
+		catch(Exception ex)
+		{
+			Debug.Log (ex.Message);
+		}
+		
+		return result;
+	}
 	
 //	public void validateEquation()
 //	{

@@ -29,9 +29,10 @@ public class DragSymbol : UIDragDropItem {
 				
 				UISprite mp = surface.gameObject.GetComponent<UISprite>();
 
+				gameObject.transform.localRotation = Quaternion.identity;
+
 				//gc.updateEquation(inx, value);
-				//gc.validateEquation();
-				mp.color = Color.green;
+				//mp.color = Color.green;
 			}
 
 			if (gameObject.name.Contains("symbol") && surface.gameObject.name == "scavengerHuntBoundingBox")
@@ -40,8 +41,19 @@ public class DragSymbol : UIDragDropItem {
 				gameObject.transform.position = objectPos;
 			}
 		}
+		else
+		{
+			gameObject.transform.position = objectPos;
+		}
 
 		base.OnDragDropRelease(surface);
+
+		if(gc.validateEquation())
+		{
+			gc.equationSolved = true;
+			gc.getNextEquation();
+		}
+		
 	}
 
 //	protected override void OnDragDropRelease (GameObject surface)
