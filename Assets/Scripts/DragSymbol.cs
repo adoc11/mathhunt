@@ -16,40 +16,70 @@ public class DragSymbol : UIDragDropItem {
 
 	protected override void OnDragDropRelease (GameObject surface)
 	{
-		if(surface != null && surface.gameObject.name.Contains("missingPiece"))
+		GameController gc = GameObject.Find ("GameController").GetComponent<GameController>();
+		if(surface != null)
 		{
-			GameController gc = GameObject.Find ("GameController").GetComponent<GameController>();
-
-			int startInx = surface.gameObject.name.LastIndexOf(")")+1;
-			
-			int inx = Convert.ToInt32(surface.gameObject.name.Substring(startInx));
-			
-			string value = gameObject.GetComponent<UILabel>().text;
-
-			UISprite mp = surface.gameObject.GetComponent<UISprite>();
-
-			
-			if (gc.eq[inx].Contains(value))
+			if(surface.gameObject.name.Contains("slot"))
 			{
-				// Determine which of the symbols in the equation list are still valid
-				// and remove the invalid symbols
-				mCollider.enabled = false;
-				gc.updateEquation(inx, value);
-				gc.validateEquation();
+				int startInx = surface.gameObject.name.LastIndexOf("t")+1;
+				
+				int inx = Convert.ToInt32(surface.gameObject.name.Substring(startInx));
+				
+				string value = gameObject.GetComponent<UILabel>().text;
+				
+				UISprite mp = surface.gameObject.GetComponent<UISprite>();
+
+				//gc.updateEquation(inx, value);
+				//gc.validateEquation();
 				mp.color = Color.green;
 			}
-			else
+
+			if (gameObject.name.Contains("symbol") && surface.gameObject.name == "scavengerHuntBoundingBox")
 			{
-				gameObject.transform.position = objectPos;
-				mp.color = Color.black;
 				surface = null;
+				gameObject.transform.position = objectPos;
 			}
 		}
-		else
-		{
-			gameObject.transform.position = objectPos;
-			surface = null;
-		}
+
 		base.OnDragDropRelease(surface);
 	}
+
+//	protected override void OnDragDropRelease (GameObject surface)
+//	{
+//		if(surface != null && surface.gameObject.name.Contains("missingPiece"))
+//		{
+//			GameController gc = GameObject.Find ("GameController").GetComponent<GameController>();
+//
+//			int startInx = surface.gameObject.name.LastIndexOf(")")+1;
+//			
+//			int inx = Convert.ToInt32(surface.gameObject.name.Substring(startInx));
+//			
+//			string value = gameObject.GetComponent<UILabel>().text;
+//
+//			UISprite mp = surface.gameObject.GetComponent<UISprite>();
+//
+//			
+//			if (gc.eq[inx].Contains(value))
+//			{
+//				// Determine which of the symbols in the equation list are still valid
+//				// and remove the invalid symbols
+//				mCollider.enabled = false;
+//				gc.updateEquation(inx, value);
+//				gc.validateEquation();
+//				mp.color = Color.green;
+//			}
+//			else
+//			{
+//				gameObject.transform.position = objectPos;
+//				mp.color = Color.black;
+//				surface = null;
+//			}
+//		}
+//		else
+//		{
+//			gameObject.transform.position = objectPos;
+//			surface = null;
+//		}
+//		base.OnDragDropRelease(surface);
+//	}
 }

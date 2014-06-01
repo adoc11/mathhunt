@@ -14,16 +14,21 @@ public class Equation : MonoBehaviour
 	public Constant answer;
 
 	public Equation(){
+		int c2 = 0;
 		firstConst = new Constant();
+		int c1 = firstConst.getValue();
 		op = new Operator();
+		string o = op.getValue();
 		if(op.getValue() == "/"){
 			List<int> divisors = firstConst.getDivisors().ToList();
 			secondConst = new Constant(divisors);
 		}
 		else{
 			secondConst = new Constant();
+			c2 = secondConst.getValue();
+
 		}
-		answer = new Constant(op.evaluate(firstConst.getValue(), secondConst.getValue()));
+		answer = new Constant(op.evaluate(c1, c2));
 	}
 
 	public string writeToString(){
@@ -42,8 +47,8 @@ public class Equation : MonoBehaviour
 
 	public List<string> addMissing(){
 		List<string> missingParts = new List<string>();
+		System.Random myRand = new System.Random();
 		for(int i = 0; i < 3; i++){
-			System.Random myRand = new System.Random();
 			int randNum = myRand.Next(0,2);
 			if(randNum == 1 && i == 0){
 				missingParts.Add(firstConst.getStrValue());

@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: e38f1953f52ff6f4fb765e2f69c8b6e0
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - ScavengerHuntElementPrefab: {fileID: 100000, guid: 45441e91628bf134c947388d9b524182,
+      type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 

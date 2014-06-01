@@ -39,7 +39,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 26, y: 50, z: 0}
+  m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &11400000
 MonoBehaviour:
@@ -49,17 +49,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 100000}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b90fc8427bee38c478f5b2f6f0ae9580, type: 3}
+  m_Script: {fileID: 11500000, guid: 1756b8fa4d5520049b06cd9f45000d06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 400000}
-  scrollMomentum: {x: 0, y: 0, z: 0}
-  restrictWithinPanel: 0
-  contentRect: {fileID: 0}
-  dragEffect: 0
-  momentumAmount: 35
-  scale: {x: 1, y: 1, z: 0}
-  scrollWheelFactor: 0
+  restriction: 0
+  cloneOnDrag: 0
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -87,7 +81,7 @@ MonoBehaviour:
     target: {fileID: 0}
     relative: 1
     absolute: 0
-  mColor: {r: 0, g: 0, b: 0, a: 1}
+  mColor: {r: 1, g: 0, b: 0, a: 1}
   mPivot: 4
   mWidth: 26
   mHeight: 50
@@ -99,7 +93,7 @@ MonoBehaviour:
   keepCrispWhenShrunk: 1
   mTrueTypeFont: {fileID: 12800000, guid: 92589e9707261414d9effde729ba35b2, type: 3}
   mFont: {fileID: 0}
-  mText: 8
+  mText: 
   mFontSize: 50
   mFontStyle: 0
   mAlignment: 0

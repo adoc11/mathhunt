@@ -44,7 +44,10 @@ public class Operator : MonoBehaviour
 			result = first * second;
 		}
 		else if(value == "/"){
-			result = first / second;
+			if( second != 0)
+				result = first / second;
+			else
+				result = 0;
 		}
 		return result;
 	}
