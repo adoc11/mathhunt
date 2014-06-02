@@ -96,6 +96,12 @@ public class GameController : MonoBehaviour
 			
 			NGUITools.SetActive(addToTimerMessage, true);
 
+			AudioSource audio = addToTimerMessage.audio;
+
+			if(audio.isPlaying)
+				audio.Stop();
+
+			audio.Play();
 
 			runDisplayTimeMessage = true;
 			addToTimerAndScore();
@@ -127,12 +133,18 @@ public class GameController : MonoBehaviour
 
 	IEnumerator WaitToClear()
 	{
-		yield return new WaitForSeconds(3);
+		yield return new WaitForSeconds(2);
 
 		clearEquation();
 
 		scavHunt.populateScavHunt(numSHSymbols);
 		generateRandomStartingValue();
+	}
+
+	void determineBestScore()
+	{
+		if(score > PlayerPrefs.GetInt("Score"))
+			PlayerPrefs.SetInt("HighScore", score);
 	}
 
 	void addToTimerAndScore()
@@ -158,7 +170,7 @@ public class GameController : MonoBehaviour
 		{
 		case 2: 
 		case 3:
-			timer.timeInSeconds += 20;
+			timer.timeInSeconds += 22;
 			timeToAddVal.text = "+" + 20;
 			if(scoreBonus != null && scoreBonus.isScoreBonus)
 			{
@@ -175,7 +187,7 @@ public class GameController : MonoBehaviour
 			break;
 		case 4: 
 		case 5:
-			timer.timeInSeconds += 35;
+			timer.timeInSeconds += 36;
 			timeToAddVal.text = "+" + 35;
 			if(scoreBonus != null && scoreBonus.isScoreBonus)
 			{
@@ -192,7 +204,7 @@ public class GameController : MonoBehaviour
 			break;
 		case 6: 
 		case 7:
-			timer.timeInSeconds += 60;
+			timer.timeInSeconds += 62;
 			timeToAddVal.text = "+" + 60;
 			if(scoreBonus != null && scoreBonus.isScoreBonus)
 			{

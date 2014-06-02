@@ -84,6 +84,7 @@ GameObject:
   - 4: {fileID: 132628291}
   - 20: {fileID: 132628293}
   - 114: {fileID: 132628292}
+  - 81: {fileID: 132628294}
   m_Layer: 8
   m_Name: Camera
   m_TagString: MainCamera
@@ -167,6 +168,13 @@ Camera:
   m_TargetTexture: {fileID: 0}
   m_HDR: 0
   m_OcclusionCulling: 1
+--- !u!81 &132628294
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 132628290}
+  m_Enabled: 1
 --- !u!1 &266193068
 GameObject:
   m_ObjectHideFlags: 0
@@ -1006,6 +1014,7 @@ GameObject:
   - 114: {fileID: 1303651588}
   - 54: {fileID: 1303651587}
   - 114: {fileID: 1303651589}
+  - 82: {fileID: 1303651590}
   m_Layer: 8
   m_Name: Panel
   m_TagString: Untagged
@@ -1103,6 +1112,64 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scoreVal: {fileID: 1787063824}
+--- !u!82 &1303651590
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1303651585}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_audioClip: {fileID: 8300000, guid: 17f76e618772d0c4c91003161c1e8ce8, type: 3}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 1
+  Mute: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 1
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
 --- !u!1 &1387327436
 GameObject:
   m_ObjectHideFlags: 0
@@ -1115,6 +1182,7 @@ GameObject:
   - 65: {fileID: 1387327439}
   - 114: {fileID: 1387327438}
   - 114: {fileID: 1387327441}
+  - 114: {fileID: 1387327442}
   m_Layer: 8
   m_Name: MainMenuNutton
   m_TagString: Untagged
@@ -1242,6 +1310,21 @@ MonoBehaviour:
   - mTarget: {fileID: 1303651589}
     mMethodName: OnMainMenuClick
     oneShot: 0
+--- !u!114 &1387327442
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1387327436}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d44bc69c2ca5f943b845318866dc1bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioClip: {fileID: 8300000, guid: 1eb567dbd9b36ef4998aa8aa5ccfc0b8, type: 3}
+  trigger: 0
+  volume: 1
+  pitch: 1
 --- !u!1 &1520415006
 GameObject:
   m_ObjectHideFlags: 0

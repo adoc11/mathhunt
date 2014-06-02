@@ -29,8 +29,8 @@ public class ScavengerHuntArea : MonoBehaviour
 	{
 		List<KeyValuePair<string, double>> bonuses = new List<KeyValuePair<string, double>>()
 		{
-			new KeyValuePair<string, double>("time", 0.05),
-			new KeyValuePair<string, double>("score", 0.05)
+			new KeyValuePair<string, double>("time", 0.1),
+			new KeyValuePair<string, double>("score", 0.1)
 			//new KeyValuePair<string, double>("time", 1)
 		};
 

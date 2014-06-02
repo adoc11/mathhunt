@@ -81,6 +81,12 @@ public class DragSymbol : UIDragDropItem {
 
 		base.OnDragDropRelease(surface);
 
+		AudioSource audio = gameObject.audio;
+		if(audio.isPlaying)
+			audio.Stop();
+
+		audio.Play();
+
 		if(gc.validateEquation())
 		{
 			gc.equationSolved = true;

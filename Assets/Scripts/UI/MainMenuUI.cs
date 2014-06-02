@@ -7,7 +7,7 @@ public class MainMenuUI : MonoBehaviour
 	
 	void Start()
 	{
-		scoreVal.text = PlayerPrefs.GetInt("Score").ToString();
+		scoreVal.text = PlayerPrefs.GetInt("HighScore").ToString();
 	}
 
 	public void OnStartClick()

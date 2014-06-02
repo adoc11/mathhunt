@@ -51,7 +51,7 @@ public class PauseMenuUI : MonoBehaviour
 		NGUITools.SetActive(soundButton, false);
 		NGUITools.SetActive(muteButton, true);
 
-		AudioListener.volume = 1;
+		AudioListener.volume = 0.5f;
 	}
 }
 
