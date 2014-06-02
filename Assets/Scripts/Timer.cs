@@ -9,22 +9,52 @@ public class Timer : MonoBehaviour
 	
 	public int seconds;
 	public int minutes;
-	
-	
+
+	Bonus tb;
+
 	public void Update()
 	{
-		timeInSeconds -= Time.deltaTime;
-		seconds = (int)timeInSeconds % 60;
-		minutes = (int)timeInSeconds / 60; 
-		
-		formatString = string.Format("{0:00}:{1:00}", minutes, seconds); 
-		//timerTexture.text = formatString;
-		label.text = formatString;
-
-		if (GetTime() == "00:00")
+		if(GameObject.FindGameObjectWithTag("TimeBonus") != null)
 		{
-			GameController gc = GameObject.Find ("GameController").GetComponent<GameController>();
-			gc.gameOver = true;
+			tb = GameObject.FindGameObjectWithTag("TimeBonus").GetComponent<Bonus>();
+		}
+
+		if(tb != null)
+		{
+			if(!tb.isTimeBonus)
+			{
+				timeInSeconds -= Time.deltaTime;
+				seconds = (int)timeInSeconds % 60;
+				minutes = (int)timeInSeconds / 60; 
+				
+				formatString = string.Format("{0:00}:{1:00}", minutes, seconds); 
+				//timerTexture.text = formatString;
+
+				label.text = formatString;
+
+				if (GetTime() == "00:00")
+				{
+					GameController gc = GameObject.Find ("GameController").GetComponent<GameController>();
+					gc.gameOver = true;
+				}
+			}
+		}
+		else
+		{
+			timeInSeconds -= Time.deltaTime;
+			seconds = (int)timeInSeconds % 60;
+			minutes = (int)timeInSeconds / 60; 
+			
+			formatString = string.Format("{0:00}:{1:00}", minutes, seconds); 
+			//timerTexture.text = formatString;
+			
+			label.text = formatString;
+			
+			if (GetTime() == "00:00")
+			{
+				GameController gc = GameObject.Find ("GameController").GetComponent<GameController>();
+				gc.gameOver = true;
+			}
 		}
 	}
 	

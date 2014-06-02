@@ -7,6 +7,8 @@ TagManager:
   - ScavHuntElement
   - 
   - Drag and Drop Root
+  - TimeBonus
+  - ScoreMultiplier
   - 
   Builtin Layer 0: Default
   Builtin Layer 1: TransparentFX

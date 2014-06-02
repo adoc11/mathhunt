@@ -6,12 +6,14 @@ public class ScavengerHuntArea : MonoBehaviour
 {
 	//public GameObject ScavengerHuntElementPrefab;
 	GameObject scavHuntBoundingBox;
-
+	public GameObject timeBonusPrefab;
+	public GameObject scoreBonusPrefab;
+	
 	int col;
 	int row;
-
+	
 	System.Random rand = new System.Random();
-
+	
 	List<Color> possibleColors = new List<Color>()
 	{
 		Color.black,
@@ -22,15 +24,71 @@ public class ScavengerHuntArea : MonoBehaviour
 		Color.magenta,
 		Color.green
 	};
-	
-//	public void clearScavHuntArea()
-//	{
-//		foreach(GameObject scavHuntElement in GameObject.FindGameObjectsWithTag("ScavHuntElement"))
-//		{
-//			Destroy(scavHuntElement);
-//		}
-//	}
 
+	void generateBonus(string[,] grid, float startPosX, float startPosY)
+	{
+		List<KeyValuePair<string, double>> bonuses = new List<KeyValuePair<string, double>>()
+		{
+			new KeyValuePair<string, double>("time", 0.05),
+			new KeyValuePair<string, double>("score", 0.05)
+			//new KeyValuePair<string, double>("time", 1)
+		};
+
+		double randBonusProb = rand.NextDouble();
+		double cumulative = 0.0;
+		
+		string selectedElement = "";
+		
+		for (int j = 0; j < bonuses.Count; j++)
+		{
+			cumulative += bonuses[j].Value;
+			if (randBonusProb < cumulative)
+			{
+				selectedElement = bonuses[j].Key;
+				break;
+			}
+		}
+
+		GameObject bonus = null;
+		if(selectedElement == "time")
+		{
+			bonus = (GameObject)Instantiate(timeBonusPrefab, GameObject.Find("ScavengerHuntPanel").transform.position, Quaternion.identity);
+			bonus.transform.parent = GameObject.Find("ScavengerHuntPanel").transform;
+			bonus.transform.localScale = new Vector3(2, 2, 1);
+
+			BonusTimer bt = GameObject.Find("bonusTimer").GetComponent<BonusTimer>();
+			bt.timeInSeconds = 31;
+			bt.bonusOver = false;
+		}
+		else if(selectedElement == "score")
+		{
+			bonus = (GameObject)Instantiate(scoreBonusPrefab, GameObject.Find("ScavengerHuntPanel").transform.position, Quaternion.identity);
+			bonus.transform.parent = GameObject.Find("ScavengerHuntPanel").transform;
+			bonus.transform.localScale = new Vector3(2, 2, 1);
+		}
+
+		if (bonus != null)
+		{
+			int randPosInx;
+			
+			do
+			{
+				randPosInx = rand.Next(0, 64);
+				
+				row = randPosInx / 8;
+				col = randPosInx % 8;
+			} while(!string.IsNullOrEmpty(grid[row, col]));
+			
+			float symbolPosX = (col * 83) + startPosX + 50;
+			float symbolPosY = (row * 48) + startPosY + 25;
+			
+			Vector3 bonusPos = new Vector3(symbolPosX, symbolPosY, 0.0f);
+
+			bonus.transform.localPosition = bonusPos;
+		}
+
+	}
+	
 	public void populateScavHunt(int numSHSymbols)
 	{
 		scavHuntBoundingBox = GameObject.Find("scavengerHuntBoundingBox");
@@ -39,14 +97,14 @@ public class ScavengerHuntArea : MonoBehaviour
 		
 		float boundingBoxStartPosY = scavHuntBoundingBox.transform.localPosition.y - (scavHuntBoundingBox.transform.localScale.y / 2);// - 10;
 		float boundingBoxEndPosY =  scavHuntBoundingBox.transform.localPosition.y + (scavHuntBoundingBox.transform.localScale.y / 2) - 10;
-
+		
 		GameObject scavHuntPrefab;
-
+		
 		string[,] colRows = new string[8, 8];
-
+		
 		List<KeyValuePair<string, double>> operators = new List<KeyValuePair<string, double>>()
 		{
-			new KeyValuePair<string, double>("sq", 0.05),
+			new KeyValuePair<string, double>("&", 0.05),
 			new KeyValuePair<string, double>("^", 0.05),
 			new KeyValuePair<string, double>("x", 0.15),
 			new KeyValuePair<string, double>("/", 0.15),
@@ -115,19 +173,24 @@ public class ScavengerHuntArea : MonoBehaviour
 			randomChoices.Add(selectedElement);
 		}
 		
-
+		
 		for(int i = 0; i < numSHSymbols; i++)
 		{
-			//scavHuntPrefab = (GameObject)Instantiate(ScavengerHuntElementPrefab, scavHuntBoundingBox.transform.position, Quaternion.Euler(0.0f, 0.0f, UnityEngine.Random.Range(-30.0f, 30.0f)));
-			//scavHuntPrefab.name = scavHuntPrefab.name + (i+1);
 			scavHuntPrefab = GameObject.Find("shElement"+(i+1).ToString());
 			scavHuntPrefab.transform.parent = GameObject.Find("ScavengerHuntPanel").transform;
 			scavHuntPrefab.transform.localScale = Vector3.one;
 			
 			UILabel scavHuntValue = GameObject.Find(scavHuntPrefab.name).GetComponent<UILabel>();
 
-			//scavHuntValue.text = randomChoices[rand.Next(0, randomChoices.Count)];
 			scavHuntValue.text = randomChoices[i];
+			
+//			Font arial = (Font)Resources.GetBuiltinResource(typeof(Font), "Arial.ttf");
+//			
+//			if(scavHuntValue.text == "&")
+//			{
+//				scavHuntValue.trueTypeFont = arial;
+//				scavHuntValue.text = "√";
+//			}
 			int randPosInx;
 			
 			do
@@ -137,21 +200,33 @@ public class ScavengerHuntArea : MonoBehaviour
 				row = randPosInx / 8;
 				col = randPosInx % 8;
 			} while(!string.IsNullOrEmpty(colRows[row, col]));
-
+			
 			colRows[row,col] = scavHuntValue.text;
-
+			
 			float symbolPosX = (col * 83) + boundingBoxStartPosX + 50;
 			float symbolPosY = (row * 48) + boundingBoxStartPosY + 25;
-
+			
 			Vector3 symbolPos = new Vector3(symbolPosX, symbolPosY, 0.0f);
 			
 			int inx = rand.Next(0, possibleColors.Count);
 			scavHuntValue.color = possibleColors[inx];
 			scavHuntValue.alpha = 255;
-
+			
 			scavHuntPrefab.transform.localRotation = Quaternion.Euler(0.0f, 0.0f, UnityEngine.Random.Range(-25.0f, 25.0f));
 			scavHuntPrefab.transform.localPosition = symbolPos;
 		}
+
+		GameObject bonus = GameObject.FindGameObjectWithTag("TimeBonus");
+
+		if(bonus != null)
+			Destroy(bonus);
+
+		bonus = GameObject.FindGameObjectWithTag("ScoreMultiplier");
+
+		if(bonus != null)
+			Destroy(bonus);
+
+
+		generateBonus(colRows, boundingBoxStartPosX, boundingBoxStartPosY);
 	}
 }
-

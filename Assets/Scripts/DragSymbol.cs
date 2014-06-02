@@ -19,7 +19,7 @@ public class DragSymbol : UIDragDropItem {
 		GameController gc = GameObject.Find ("GameController").GetComponent<GameController>();
 		if(surface != null)
 		{
-			if(surface.gameObject.name.Contains("slot"))
+			if(surface.gameObject.name.Contains("slot") && gameObject.tag == "ScavHuntElement")
 			{
 				int startInx = surface.gameObject.name.LastIndexOf("t")+1;
 				
@@ -35,10 +35,32 @@ public class DragSymbol : UIDragDropItem {
 				//mp.color = Color.green;
 			}
 
-			if (gameObject.name.Contains("symbol") && surface.gameObject.name == "scavengerHuntBoundingBox")
+			if((gameObject.tag == "TimeBonus" || gameObject.tag == "ScoreMultiplier") && surface.gameObject.name != "scavengerHuntBoundingBox")
 			{
-				surface = null;
-				gameObject.transform.position = objectPos;
+				if(surface.gameObject.name != "bonusDrop")
+				{
+					surface = null;
+					gameObject.transform.position = objectPos;
+				}
+			}
+
+
+			if (gameObject.name.Contains("symbol"))
+			{
+				if(surface.gameObject.name == "scavengerHuntBoundingBox" || surface.gameObject.name == "bonusDrop")
+				{
+					surface = null;
+					gameObject.transform.position = objectPos;
+				}
+			}
+
+			if (gameObject.name.Contains("shElement"))
+			{
+				if(surface.gameObject.name == "bonusDrop")
+				{
+					surface = null;
+					gameObject.transform.position = objectPos;
+				}
 			}
 		}
 		else
@@ -46,12 +68,23 @@ public class DragSymbol : UIDragDropItem {
 			gameObject.transform.position = objectPos;
 		}
 
+		
+		if((gameObject.tag == "TimeBonus" || gameObject.tag == "ScoreMultiplier") && surface != null && surface.gameObject.name == "bonusDrop")
+		{
+			Bonus bonus = gameObject.GetComponent<Bonus>();
+			bonus.applyBonus(gameObject.tag);
+			UISprite bonusSprite = gameObject.GetComponent<UISprite>();
+			bonusSprite.alpha = 255;
+
+			gameObject.collider.enabled = false;
+		}
+
 		base.OnDragDropRelease(surface);
 
 		if(gc.validateEquation())
 		{
 			gc.equationSolved = true;
-			gc.getNextEquation();
+			//gc.getNextEquation();
 		}
 		
 	}

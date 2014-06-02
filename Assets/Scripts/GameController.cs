@@ -9,81 +9,205 @@ using System.Linq;
 public class GameController : MonoBehaviour
 {
 	public bool gameOver;
+	public bool paused;
 	public GameObject SymbolPrefab;
 	public UILabel ScoreLabel;
 	public int numSHSymbols = 40;
 	public GameObject startingSlot;
 	public bool equationSolved = false;
+	public GameObject PausePanel;
+	public GameObject addToTimerMessage;
+
+	public int score { get; set; }
 
 	List<GameObject> slots;
 	string _equation; 
-	
-	int score { get; set; }
+	Vector3 messagePos;
+	char[] _operators = new [] { '+', '-', 'x', '/', '&', '^' }; 
+	bool runDisplayTimeMessage = false;
+	int tempScore = 0;
+	int delay = 0;
+	int delayMod = 0;
+
 	System.Random rand = new System.Random();
 
 	ScavengerHuntArea scavHunt;
+	Timer timer;
 
 	void Start()
 	{
 		gameOver = false;
+		paused = false;
 		generateRandomStartingValue();
-		scavHunt = gameObject.GetComponent<ScavengerHuntArea>();
+		scavHunt = GameObject.Find("ScavengerHuntPanel").GetComponent<ScavengerHuntArea>();
 		scavHunt.populateScavHunt(numSHSymbols);
-		//createEquation();
-		//populateScavengerHunt();
+		timer = GameObject.Find("Timer").GetComponent<Timer>();
 
-		ScoreLabel.text = "Score: " + 0;
+		ScoreLabel.text = "0";
 	}
 	
 	// Update is called once per frame
 	void Update ()
 	{
-		if(gameOver)
+		delay++;
+
+		if(score < tempScore && delay % delayMod == 0)
+		{
+			score += 1;
+		}
+		if(Input.GetKeyDown(KeyCode.Escape) && !paused)
+		{
+			paused = true;
+			Time.timeScale = 0;
+			NGUITools.SetActive(PausePanel, true);
+		}
+		else if(gameOver)
 		{
 			Application.LoadLevel("GameOver");
 		}
-//		else if(equationSolved)
-//		{
-//			Transform tr = null;
-//			equationSolved = false;
-//			score += 10;
-//			ScoreLabel.text = "Score: " + score;
-//
-//			foreach(GameObject slot in slots)
-//			{
-//				UISprite mp = slot.gameObject.transform.parent.gameObject.GetComponent<UISprite>();
-//				tr = slot.transform.GetComponentsInChildren<Transform>().FirstOrDefault(t => t.name.Contains("shElement") || t.name.Contains("symbol"));
-//				
-//				if(tr != null)
-//				{
-//					//mp.color = new Color(.812f, 1.0f, .812f);
-//					mp.color = new Color(0.0f, 1.0f, 0.0f, .1f);
-//				}
-//
-//			}
+		else if(equationSolved)
+		{
+			Transform tr = null;
+			equationSolved = false;
 
-			//getNextEquation();
+			if( GameObject.Find("bonusTimer") != null)
+			{
+				BonusTimer bt = GameObject.Find("bonusTimer").GetComponent<BonusTimer>();
+
+				if(bt != null)
+					bt.timeInSeconds = 0;
+			}
+
+			delay = 0;
+
+			foreach(GameObject slot in slots)
+			{
+				UISprite mp = slot.gameObject.transform.parent.gameObject.GetComponent<UISprite>();
+				tr = slot.transform.GetComponentsInChildren<Transform>().FirstOrDefault(t => t.name.Contains("shElement") || t.name.Contains("symbol"));
+				
+				if(tr != null)
+				{
+					mp.color = new Color(0.0f, 1.0f, 0.0f, .1f);
+				}
+
+			}
+
+			messagePos = addToTimerMessage.transform.localPosition;
+			
+			NGUITools.SetActive(addToTimerMessage, true);
 
 
-			//StartCoroutine("WaitToClear");
-		//}
+			runDisplayTimeMessage = true;
+			addToTimerAndScore();
+
+			//ScoreLabel.text = score.ToString();
+
+			StartCoroutine("WaitToClear");
+		}
+
+		ScoreLabel.text = score.ToString();
+
+		PlayerPrefs.SetInt("Score", score);
+
+		if(runDisplayTimeMessage)
+		{
+			addToTimerMessage.transform.localPosition += Vector3.up * 4;
+
+			StartCoroutine("ClearMessage");
+		}
 	}
 
-	public void getNextEquation()
+	IEnumerator ClearMessage()
 	{
+		yield return new WaitForSeconds(1);
+		addToTimerMessage.transform.localPosition = messagePos;
+		NGUITools.SetActive(addToTimerMessage, false);
+		runDisplayTimeMessage = false;
+	}
+
+	IEnumerator WaitToClear()
+	{
+		yield return new WaitForSeconds(3);
+
 		clearEquation();
-		//scavHunt.clearScavHuntArea();
+
 		scavHunt.populateScavHunt(numSHSymbols);
 		generateRandomStartingValue();
 	}
-	
-	IEnumerator WaitToClear()
+
+	void addToTimerAndScore()
 	{
-		yield return new WaitForSeconds(2);
-		clearEquation();
-		//scavHunt.clearScavHuntArea();
-		//scavHunt.populateScavHunt(numSHSymbols);
-		generateRandomStartingValue();
+		Transform tr = null;
+		int slotCounter = 0;
+		for(int i = 0; i < slots.Count; i++)
+		{
+			tr = slots[i].transform.GetComponentsInChildren<Transform>().FirstOrDefault(t => t.name.Contains("shElement"));
+			if (tr != null)
+				slotCounter++;
+		}
+
+		UILabel timeToAddVal = GameObject.Find ("secondsVal").GetComponent<UILabel>();
+	
+		Bonus scoreBonus = null;
+		if(GameObject.FindGameObjectWithTag("ScoreMultiplier") != null)
+			scoreBonus = GameObject.FindGameObjectWithTag("ScoreMultiplier").GetComponent<Bonus>();
+
+
+
+		switch(slotCounter)
+		{
+		case 2: 
+		case 3:
+			timer.timeInSeconds += 20;
+			timeToAddVal.text = "+" + 20;
+			if(scoreBonus != null && scoreBonus.isScoreBonus)
+			{
+				//score += 10 * scoreBonus.multiplier;
+				tempScore = score + 10 * scoreBonus.multiplier;
+				delayMod = 8;
+			}
+			else
+			{
+				//score += 10;
+				tempScore = score + 10;
+				delayMod = 10;
+			}
+			break;
+		case 4: 
+		case 5:
+			timer.timeInSeconds += 35;
+			timeToAddVal.text = "+" + 35;
+			if(scoreBonus != null && scoreBonus.isScoreBonus)
+			{
+				//score += 50 * scoreBonus.multiplier;
+				tempScore = score + 50 * scoreBonus.multiplier;
+				delayMod = 1;
+			}
+			else
+			{
+				tempScore = score + 50;
+				//score += 50;
+				delayMod = 3;
+			}
+			break;
+		case 6: 
+		case 7:
+			timer.timeInSeconds += 60;
+			timeToAddVal.text = "+" + 60;
+			if(scoreBonus != null && scoreBonus.isScoreBonus)
+			{
+				//score += 100 * scoreBonus.multiplier;
+				tempScore = score + 100 * scoreBonus.multiplier;
+				delayMod = 1;
+			}
+			else
+			{
+				//score += 100;
+				tempScore = score + 100;
+				delayMod = 1;
+			}
+			break;
+		}
 	}
 
 	void clearEquation()
@@ -98,15 +222,10 @@ public class GameController : MonoBehaviour
 			if(tr != null)
 			{
 				mp.color = new Color(0.0f, 0.0f, 0.0f, .1f);
-				//UILabel l = tr.gameObject.GetComponent<UILabel>();
-				//l.text = "";
 				Destroy(tr.gameObject);
 			}
 		}
 	}
-
-
-	
 
 	void generateRandomStartingValue()
 	{	
@@ -115,9 +234,16 @@ public class GameController : MonoBehaviour
 		for(int i = 1; i <= 9; i++)
 		{
 			if(i != 8)
+			{
 				slots.Add(GameObject.Find("Grid" + i.ToString()));
+			}
 		}
 
+		foreach(GameObject slot in slots)
+		{
+			UISprite sp = slot.gameObject.transform.parent.GetComponent<UISprite>();
+			sp.color = new Color(0.0f, 0.0f, 0.0f, 0.1f);
+		}
 
 		startingSlot = slots[rand.Next(0, slots.Count)];
 
@@ -134,6 +260,7 @@ public class GameController : MonoBehaviour
 
 	public bool validateEquation()
 	{
+		bool result = false;
 		Transform tr = null;
 		UILabel scavHuntLabel;
 		_equation = "";
@@ -154,19 +281,59 @@ public class GameController : MonoBehaviour
 
 		}
 
-		//Debug.Log(_equation);
+		try
+		{
+			result = verifySymbols(_equation);
+		}
+		catch(Exception ex)
+		{
+			Debug.Log(ex.Message);
+		}
 
-		return verifySymbols(_equation);
+		return result;
 	}
 
 	bool verifySymbols(string eq)
 	{
 		bool result = false;
-		int startInx = eq.IndexOf("√")+2;
-		int endInx = eq.IndexOf(" ", startInx);
-		string sqrtVal = eq.Substring(startInx, endInx - startInx);
+
+		// Expression must contain at least one operator
+		if (eq.IndexOfAny(_operators) == -1)
+			return result;
+
+		if(eq.IndexOf("^") > -1)
+		{
+			int startInx1 = eq.IndexOf("^");
+			int startInx2 = eq.IndexOf("^")+2;
+			int endInx1 = eq.IndexOf(" ", startInx1);
+			int endInx2 = eq.IndexOf(" ", startInx2);
+
+			string leftOfPow = (startInx1 > 0 ? eq.Substring(0, startInx1) : "");
+			if (leftOfPow != "")
+			{
+				startInx1 = leftOfPow.LastIndexOf(" ",leftOfPow.Length-2);
+				if (startInx1 != -1)
+					leftOfPow = leftOfPow.Substring(startInx1);
+				else
+					startInx1 = 0;
+
+				string powLeftVal = leftOfPow.Trim();
+				string powRightVal = eq.Substring(startInx2, endInx2 - startInx2);
+				eq = eq.Replace(powLeftVal + " ^ " + powRightVal, "Pow(" + powLeftVal + "," + powRightVal + ")");
+
+			}
+		}
+
+		if(eq.IndexOf("&") > -1)
+		{
+			int startInx = eq.IndexOf("&")+2;
+			int endInx = eq.IndexOf(" ", startInx);
+			string sqrtVal = eq.Substring(startInx, endInx - startInx);
+			eq = eq.Replace("& " + sqrtVal, "Sqrt(" + sqrtVal + ")");
+		}
+
 		eq = eq.Replace("x", "*");
-		eq = eq.Replace("√", "Sqrt(" + sqrtVal + ")");
+
 
 		NCalc.Expression expr;
 
@@ -185,123 +352,4 @@ public class GameController : MonoBehaviour
 		
 		return result;
 	}
-	
-//	public void validateEquation()
-//	{
-//		
-//		//int count = _equation.Split("{T").Length - 1;
-//		
-//		List<string> tokens = new List<string>();
-//		
-//		string tempEQ = _equation;
-//		int pos = tempEQ.IndexOf("{T");
-//		while (pos > -1 && pos < tempEQ.Length)
-//		{
-//			tokens.Add(tempEQ.Substring(pos,4));
-//			pos = tempEQ.IndexOf("{T", pos + 1);
-//		}
-//		
-//		List<string> tempList = new List<string>();
-//		for (int i = 0; i < tokens.Count; i++)
-//		{
-//			int inx = Convert.ToInt16(tokens[i].Substring(2,1));
-//			for (int j = 0; j < eq[inx].Count; j++)
-//			{
-//				tempEQ = _equation;
-//				int k = tempEQ.IndexOf(tokens[i]);
-//				tempEQ = tempEQ.Remove(k, 4).Insert(k, eq[inx][j]);
-//				if (!verifySymbols(tempEQ))
-//					//eq[inx].Remove(eq[inx][j]);
-//					tempList.Add(eq[inx][j]);
-//			}
-//			
-//			foreach(string s in tempList)
-//			{
-//				eq[inx].Remove(s);
-//			}
-//		}
-//		
-//		if (_equation.IndexOf("{T") == -1)
-//		{
-//			//clearEquation();
-//			equationSolved = true;
-//			numAnswers--;
-//		}
-//	}
-//	
-//	bool verifySymbols(string eq)
-//	{
-//		eq = eq.Replace("x", "*");
-//		//eq = eq.Replace("√", "sqrt(
-//		
-//		NCalc.Expression expr = new NCalc.Expression(eq);
-//		
-//		return (bool)expr.Evaluate();
-//	}
-
-//	void populateScavengerHunt()
-//	{
-//		GameObject scavHuntBoundingBox = GameObject.Find("scavengerHuntBoundingBox");
-//		float boundingBoxStartPosX = scavHuntBoundingBox.transform.localPosition.x - (scavHuntBoundingBox.transform.localScale.x / 2) + 10;//- scavHuntBoundingBox.transform.localPosition.x / 2;
-//		float boundingBoxEndPosX = scavHuntBoundingBox.transform.localPosition.x + (scavHuntBoundingBox.transform.localScale.x / 2) - 10; //scavHuntBoundingBox.transform.localPosition.x / 2;
-//		
-//		float boundingBoxStartPosY = scavHuntBoundingBox.transform.localPosition.y - (scavHuntBoundingBox.transform.localScale.y / 2) + 10;
-//		float boundingBoxEndPosY =  scavHuntBoundingBox.transform.localPosition.y + (scavHuntBoundingBox.transform.localScale.y / 2) - 10;
-//		
-//		int k = 0;
-//		GameObject scavHuntPrefab;
-//		System.Random rand = new System.Random();
-//		bool safeSpawn = false;
-//
-//		List<Collider> shColliders = new List<Collider>();
-//
-//		foreach(GameObject sc in GameObject.FindGameObjectsWithTag("ScavHuntElement"))
-//		{
-//			shColliders.Add(sc.GetComponent<Collider>());
-//		}
-//
-//		for(int i = 0; i < numSHSymbols; i++)
-//		{
-//			scavHuntPrefab = (GameObject)Instantiate(ScavengerHuntElementPrefab, scavHuntBoundingBox.transform.position, Quaternion.identity);
-//			scavHuntPrefab.name = scavHuntPrefab.name + (i+1);
-//			scavHuntPrefab.transform.parent = GameObject.Find("ScavengerHuntPanel").transform;
-//			scavHuntPrefab.transform.localScale = Vector3.one;
-//			
-//			UILabel scavHuntValue = GameObject.Find(scavHuntPrefab.name).GetComponent<UILabel>();
-//			
-//			List<string> randomChoices = new List<string>();
-//			for(int j = 0; j <= 100; j++)
-//			{
-//				randomChoices.Add(j.ToString());
-//			}
-//
-//			for(int n = 0; n < 10; n++)
-//			{
-//				randomChoices.Add("+");
-//				randomChoices.Add("-");
-//				randomChoices.Add("x");
-//				randomChoices.Add("/");
-//				randomChoices.Add("^");
-//				randomChoices.Add("√");
-//			}
-//			
-//			scavHuntValue.text = randomChoices[rand.Next(0, randomChoices.Count)];
-//			
-//			int inx = rand.Next(0, possibleColors.Count);
-//			scavHuntValue.color = possibleColors[inx];
-//
-//			if (!safeSpawn){
-//				safeSpawn = true;
-//				
-//				foreach(Collider shc in shColliders){
-//					if (shc.bounds.Intersects(scavHuntPrefab.collider.bounds)){
-//						safeSpawn = false;
-//						break;
-//					}
-//				}
-//			}
-//			
-//			scavHuntPrefab.transform.localPosition = new Vector3(UnityEngine.Random.Range(boundingBoxStartPosX, boundingBoxEndPosX), UnityEngine.Random.Range(boundingBoxStartPosY, boundingBoxEndPosY), 0.0f);
-//		}
-//	}
 }
