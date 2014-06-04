@@ -65,6 +65,10 @@ public class ScavengerHuntArea : MonoBehaviour
 			bonus = (GameObject)Instantiate(scoreBonusPrefab, GameObject.Find("ScavengerHuntPanel").transform.position, Quaternion.identity);
 			bonus.transform.parent = GameObject.Find("ScavengerHuntPanel").transform;
 			bonus.transform.localScale = new Vector3(2, 2, 1);
+
+			BonusTimer bt = GameObject.Find("bonusTimer").GetComponent<BonusTimer>();
+			//bt.timeInSeconds = 31;
+			bt.bonusOver = false;
 		}
 
 		if (bonus != null)
@@ -104,7 +108,7 @@ public class ScavengerHuntArea : MonoBehaviour
 		
 		List<KeyValuePair<string, double>> operators = new List<KeyValuePair<string, double>>()
 		{
-			new KeyValuePair<string, double>("&", 0.05),
+			new KeyValuePair<string, double>("√", 0.05),
 			new KeyValuePair<string, double>("^", 0.05),
 			new KeyValuePair<string, double>("x", 0.15),
 			new KeyValuePair<string, double>("/", 0.15),
@@ -183,14 +187,7 @@ public class ScavengerHuntArea : MonoBehaviour
 			UILabel scavHuntValue = GameObject.Find(scavHuntPrefab.name).GetComponent<UILabel>();
 
 			scavHuntValue.text = randomChoices[i];
-			
-//			Font arial = (Font)Resources.GetBuiltinResource(typeof(Font), "Arial.ttf");
-//			
-//			if(scavHuntValue.text == "&")
-//			{
-//				scavHuntValue.trueTypeFont = arial;
-//				scavHuntValue.text = "√";
-//			}
+
 			int randPosInx;
 			
 			do

@@ -15,7 +15,7 @@ GameObject:
   - 82: {fileID: 8200000}
   m_Layer: 8
   m_Name: ScoreBonus
-  m_TagString: TimeBonus
+  m_TagString: ScoreMultiplier
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -138,7 +138,7 @@ MonoBehaviour:
   keepAspectRatio: 0
   aspectRatio: 1
   mAtlas: {fileID: 11400000, guid: 62adb30369acbf943a67cee0f69267a3, type: 2}
-  mSpriteName: Button A
+  mSpriteName: Button B
   mType: 0
   mFillDirection: 4
   mFillAmount: 1

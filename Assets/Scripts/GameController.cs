@@ -17,17 +17,19 @@ public class GameController : MonoBehaviour
 	public bool equationSolved = false;
 	public GameObject PausePanel;
 	public GameObject addToTimerMessage;
+	public int startingValue;
 
 	public int score { get; set; }
 
 	List<GameObject> slots;
 	string _equation; 
 	Vector3 messagePos;
-	char[] _operators = new [] { '+', '-', 'x', '/', '&', '^' }; 
+	char[] _operators = new [] { '+', '-', 'x', '/', '√', '^' }; 
 	bool runDisplayTimeMessage = false;
 	int tempScore = 0;
 	int delay = 0;
 	int delayMod = 0;
+	int bestScore = 0;
 
 	System.Random rand = new System.Random();
 
@@ -63,6 +65,12 @@ public class GameController : MonoBehaviour
 		}
 		else if(gameOver)
 		{
+			bestScore = PlayerPrefs.GetInt("Score");
+			if (score > bestScore)
+				PlayerPrefs.SetInt("HighScore", score);
+			else
+				PlayerPrefs.SetInt("HighScore", bestScore);
+
 			Application.LoadLevel("GameOver");
 		}
 		else if(equationSolved)
@@ -141,12 +149,6 @@ public class GameController : MonoBehaviour
 		generateRandomStartingValue();
 	}
 
-	void determineBestScore()
-	{
-		if(score > PlayerPrefs.GetInt("Score"))
-			PlayerPrefs.SetInt("HighScore", score);
-	}
-
 	void addToTimerAndScore()
 	{
 		Transform tr = null;
@@ -164,61 +166,59 @@ public class GameController : MonoBehaviour
 		if(GameObject.FindGameObjectWithTag("ScoreMultiplier") != null)
 			scoreBonus = GameObject.FindGameObjectWithTag("ScoreMultiplier").GetComponent<Bonus>();
 
-
-
 		switch(slotCounter)
 		{
-		case 2: 
-		case 3:
-			timer.timeInSeconds += 22;
-			timeToAddVal.text = "+" + 20;
-			if(scoreBonus != null && scoreBonus.isScoreBonus)
-			{
-				//score += 10 * scoreBonus.multiplier;
-				tempScore = score + 10 * scoreBonus.multiplier;
-				delayMod = 8;
-			}
-			else
-			{
-				//score += 10;
-				tempScore = score + 10;
-				delayMod = 10;
-			}
-			break;
-		case 4: 
-		case 5:
-			timer.timeInSeconds += 36;
-			timeToAddVal.text = "+" + 35;
-			if(scoreBonus != null && scoreBonus.isScoreBonus)
-			{
-				//score += 50 * scoreBonus.multiplier;
-				tempScore = score + 50 * scoreBonus.multiplier;
-				delayMod = 1;
-			}
-			else
-			{
-				tempScore = score + 50;
-				//score += 50;
-				delayMod = 3;
-			}
-			break;
-		case 6: 
-		case 7:
-			timer.timeInSeconds += 62;
-			timeToAddVal.text = "+" + 60;
-			if(scoreBonus != null && scoreBonus.isScoreBonus)
-			{
-				//score += 100 * scoreBonus.multiplier;
-				tempScore = score + 100 * scoreBonus.multiplier;
-				delayMod = 1;
-			}
-			else
-			{
-				//score += 100;
-				tempScore = score + 100;
-				delayMod = 1;
-			}
-			break;
+			case 2: 
+			case 3:
+				timer.timeInSeconds += 22;
+				timeToAddVal.text = "+" + 20;
+				if(scoreBonus != null && scoreBonus.isScoreBonus)
+				{
+					//score += 10 * scoreBonus.multiplier;
+					tempScore = score + 10 * scoreBonus.multiplier;
+					delayMod = 8;
+				}
+				else
+				{
+					//score += 10;
+					tempScore = score + 10;
+					delayMod = 10;
+				}
+				break;
+			case 4: 
+			case 5:
+				timer.timeInSeconds += 36;
+				timeToAddVal.text = "+" + 35;
+				if(scoreBonus != null && scoreBonus.isScoreBonus)
+				{
+					//score += 50 * scoreBonus.multiplier;
+					tempScore = score + 50 * scoreBonus.multiplier;
+					delayMod = 1;
+				}
+				else
+				{
+					tempScore = score + 50;
+					//score += 50;
+					delayMod = 3;
+				}
+				break;
+			case 6: 
+			case 7:
+				timer.timeInSeconds += 62;
+				timeToAddVal.text = "+" + 60;
+				if(scoreBonus != null && scoreBonus.isScoreBonus)
+				{
+					//score += 100 * scoreBonus.multiplier;
+					tempScore = score + 100 * scoreBonus.multiplier;
+					delayMod = 1;
+				}
+				else
+				{
+					//score += 100;
+					tempScore = score + 100;
+					delayMod = 1;
+				}
+				break;
 		}
 	}
 
@@ -266,7 +266,9 @@ public class GameController : MonoBehaviour
 		
 		UILabel symbolValue = GameObject.Find(symbolPrefab.name).GetComponent<UILabel>();
 
-		symbolValue.text = rand.Next(0, 21).ToString();
+		startingValue = rand.Next(0, 21).ToString();
+
+		symbolValue.text = startingValue;
 		symbolValue.alpha = 255;
 	}
 
@@ -336,12 +338,12 @@ public class GameController : MonoBehaviour
 			}
 		}
 
-		if(eq.IndexOf("&") > -1)
+		if(eq.IndexOf("√") > -1)
 		{
-			int startInx = eq.IndexOf("&")+2;
+			int startInx = eq.IndexOf("√")+2;
 			int endInx = eq.IndexOf(" ", startInx);
 			string sqrtVal = eq.Substring(startInx, endInx - startInx);
-			eq = eq.Replace("& " + sqrtVal, "Sqrt(" + sqrtVal + ")");
+			eq = eq.Replace("√ " + sqrtVal, "Sqrt(" + sqrtVal + ")");
 		}
 
 		eq = eq.Replace("x", "*");
