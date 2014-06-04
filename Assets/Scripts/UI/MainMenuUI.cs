@@ -12,6 +12,12 @@ public class MainMenuUI : MonoBehaviour
 		scoreVal.text = PlayerPrefs.GetInt("HighScore").ToString();
 	}
 
+	public void OnBackClick()
+	{
+		NGUITools.SetActive(helpPanel, false);
+		NGUITools.SetActive(mainMenuPanel, true);
+	}
+
 	public void OnHelpClick()
 	{
 		NGUITools.SetActive(this.gameObject, false);

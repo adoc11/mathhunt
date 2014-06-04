@@ -26,6 +26,8 @@ public class GameSceneUI : MonoBehaviour
 				
 				gc.paused = true;
 				NGUITools.SetActive(PausePanel, true);
+				NGUITools.SetActive(pauseButton, false);
+				NGUITools.SetActive(resumeButton, true);
 			}
 			else
 			{
@@ -33,6 +35,8 @@ public class GameSceneUI : MonoBehaviour
 				
 				gc.paused = false;
 				NGUITools.SetActive(PausePanel, false);
+				NGUITools.SetActive(pauseButton, true);
+				NGUITools.SetActive(resumeButton, false);
 			}
 		}
 	}

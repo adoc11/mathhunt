@@ -30,9 +30,6 @@ public class DragSymbol : UIDragDropItem {
 				UISprite mp = surface.gameObject.GetComponent<UISprite>();
 
 				gameObject.transform.localRotation = Quaternion.identity;
-
-				//gc.updateEquation(inx, value);
-				//mp.color = Color.green;
 			}
 
 			if((gameObject.tag == "TimeBonus" || gameObject.tag == "ScoreMultiplier") && surface.gameObject.name != "scavengerHuntBoundingBox")

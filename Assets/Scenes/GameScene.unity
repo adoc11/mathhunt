@@ -3798,7 +3798,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 6500000, guid: a3fcd5367a8fcdf40b198c2bba596874, type: 2}
       propertyPath: m_Size.x
-      value: 42
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 11400002, guid: a3fcd5367a8fcdf40b198c2bba596874, type: 2}
       propertyPath: mWidth
@@ -11770,7 +11770,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 42, y: 50, z: 0}
+  m_Size: {x: 40, y: 50, z: 0}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &1102545592
 MonoBehaviour:
@@ -11808,7 +11808,7 @@ MonoBehaviour:
   autoResizeBoxCollider: 1
   hideIfOffScreen: 0
   keepAspectRatio: 0
-  aspectRatio: .839999974
+  aspectRatio: .800000012
   keepCrispWhenShrunk: 1
   mTrueTypeFont: {fileID: 12800000, guid: 92589e9707261414d9effde729ba35b2, type: 3}
   mFont: {fileID: 0}
@@ -16892,7 +16892,7 @@ MonoBehaviour:
   alwaysOnScreen: 0
   anchorOffset: 0
   renderQueue: 0
-  startingRenderQueue: 3010
+  startingRenderQueue: 3011
   mAlpha: 1
   mClipping: 0
   mClipRange: {x: 0, y: 0, z: 300, w: 200}
