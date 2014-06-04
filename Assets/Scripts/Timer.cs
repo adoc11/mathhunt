@@ -11,6 +11,12 @@ public class Timer : MonoBehaviour
 	public int minutes;
 
 	Bonus tb;
+	GameController gc;
+
+	void Start()
+	{
+		gc = GameObject.Find("GameController").GetComponent<GameController>();
+	}
 
 	public void Update()
 	{
@@ -23,7 +29,15 @@ public class Timer : MonoBehaviour
 		{
 			if(!tb.isTimeBonus)
 			{
-				timeInSeconds -= Time.deltaTime;
+				if(gc.numEquationsSolved < 10)
+					timeInSeconds -= Time.deltaTime;
+				else if(gc.numEquationsSolved < 20)
+					timeInSeconds -= Time.deltaTime * 2;
+				else if(gc.numEquationsSolved < 30)
+					timeInSeconds -= Time.deltaTime * 5;
+				else if(gc.numEquationsSolved > 40)
+					timeInSeconds -= Time.deltaTime * 8;
+
 				seconds = (int)timeInSeconds % 60;
 				minutes = (int)timeInSeconds / 60; 
 				
@@ -34,14 +48,21 @@ public class Timer : MonoBehaviour
 
 				if (GetTime() == "00:00")
 				{
-					GameController gc = GameObject.Find ("GameController").GetComponent<GameController>();
 					gc.gameOver = true;
 				}
 			}
 		}
 		else
 		{
-			timeInSeconds -= Time.deltaTime;
+			if(gc.numEquationsSolved < 10)
+				timeInSeconds -= Time.deltaTime;
+			else if(gc.numEquationsSolved >= 10 && gc.numEquationsSolved < 20)
+				timeInSeconds -= Time.deltaTime * 2;
+			else if(gc.numEquationsSolved >= 20 && gc.numEquationsSolved < 30)
+				timeInSeconds -= Time.deltaTime * 5;
+			else if(gc.numEquationsSolved >= 40 && gc.numEquationsSolved > 40)
+				timeInSeconds -= Time.deltaTime * 8;
+
 			seconds = (int)timeInSeconds % 60;
 			minutes = (int)timeInSeconds / 60; 
 			
@@ -52,7 +73,6 @@ public class Timer : MonoBehaviour
 			
 			if (GetTime() == "00:00")
 			{
-				GameController gc = GameObject.Find ("GameController").GetComponent<GameController>();
 				gc.gameOver = true;
 			}
 		}

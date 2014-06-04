@@ -18,6 +18,7 @@ public class GameController : MonoBehaviour
 	public GameObject PausePanel;
 	public GameObject addToTimerMessage;
 	public int startingValue;
+	public int numEquationsSolved = 0;
 
 	public int score { get; set; }
 
@@ -57,12 +58,12 @@ public class GameController : MonoBehaviour
 		{
 			score += 1;
 		}
-		if(Input.GetKeyDown(KeyCode.Escape) && !paused)
-		{
-			paused = true;
-			Time.timeScale = 0;
-			NGUITools.SetActive(PausePanel, true);
-		}
+//		if(Input.GetKeyDown(KeyCode.Escape) && !paused)
+//		{
+//			paused = true;
+//			Time.timeScale = 0;
+//			NGUITools.SetActive(PausePanel, true);
+//		}
 		else if(gameOver)
 		{
 			bestScore = PlayerPrefs.GetInt("Score");
@@ -77,6 +78,7 @@ public class GameController : MonoBehaviour
 		{
 			Transform tr = null;
 			equationSolved = false;
+			numEquationsSolved++;
 
 			if( GameObject.Find("bonusTimer") != null)
 			{
@@ -266,9 +268,9 @@ public class GameController : MonoBehaviour
 		
 		UILabel symbolValue = GameObject.Find(symbolPrefab.name).GetComponent<UILabel>();
 
-		startingValue = rand.Next(0, 21).ToString();
+		startingValue = rand.Next(0, 21);
 
-		symbolValue.text = startingValue;
+		symbolValue.text = startingValue.ToString();;
 		symbolValue.alpha = 255;
 	}
 
