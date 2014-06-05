@@ -27,11 +27,11 @@ public class Timer : MonoBehaviour
 			if(gc.numEquationsSolved < 10)
 				timeInSeconds -= Time.deltaTime;
 			else if(gc.numEquationsSolved < 20)
-				timeInSeconds -= Time.deltaTime * 2;
+				timeInSeconds -= Time.deltaTime * 1.5f;
 			else if(gc.numEquationsSolved < 30)
-				timeInSeconds -= Time.deltaTime * 5;
+				timeInSeconds -= Time.deltaTime * 3;
 			else if(gc.numEquationsSolved > 40)
-				timeInSeconds -= Time.deltaTime * 8;
+				timeInSeconds -= Time.deltaTime * 5;
 
 			seconds = (int)timeInSeconds % 60;
 			minutes = (int)timeInSeconds / 60; 
