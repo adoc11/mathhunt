@@ -43,16 +43,16 @@ public class DragSymbol : UIDragDropItem {
 //			}
 
 
-//			if (gameObject.name.Contains("symbol"))
-//			{
-//				if(surface.gameObject.name == "scavengerHuntBoundingBox" || surface.gameObject.name == "bonusDrop")
-//				{
-//					surface = null;
-//					gameObject.transform.position = objectPos;
-//				}
-//			}
+			if (gameObject.name.Contains("shElement"))
+			{
+				if(surface.gameObject.name == "bonusDrop" || surface.gameObject.name.Contains("shElement") || surface.gameObject.name.Contains("symbol"))
+				{
+					surface = null;
+					gameObject.transform.position = objectPos;
+				}
+			}
 
-			if (gameObject.name.Contains("shElement") || gameObject.name.Contains("symbol"))
+			if (gameObject.name.Contains("symbol"))
 			{
 				if(surface.gameObject.name == "scavengerHuntBoundingBox" || surface.gameObject.name.Contains("shElement") || surface.gameObject.name.Contains("symbol") || surface.gameObject.name == "bonusDrop")
 				{
