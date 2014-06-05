@@ -16,51 +16,21 @@ public class Timer : MonoBehaviour
 	void Start()
 	{
 		gc = GameObject.Find("GameController").GetComponent<GameController>();
+		tb = GameObject.Find("ScoreTimerEquationHistoryPanel").GetComponent<Bonus>();
 	}
 
 	public void Update()
 	{
-		if(GameObject.FindGameObjectWithTag("TimeBonus") != null)
-		{
-			tb = GameObject.FindGameObjectWithTag("TimeBonus").GetComponent<Bonus>();
-		}
 
-		if(tb != null)
-		{
-			if(!tb.isTimeBonus)
-			{
-				if(gc.numEquationsSolved < 10)
-					timeInSeconds -= Time.deltaTime;
-				else if(gc.numEquationsSolved < 20)
-					timeInSeconds -= Time.deltaTime * 2;
-				else if(gc.numEquationsSolved < 30)
-					timeInSeconds -= Time.deltaTime * 5;
-				else if(gc.numEquationsSolved > 40)
-					timeInSeconds -= Time.deltaTime * 8;
-
-				seconds = (int)timeInSeconds % 60;
-				minutes = (int)timeInSeconds / 60; 
-				
-				formatString = string.Format("{0:00}:{1:00}", minutes, seconds); 
-				//timerTexture.text = formatString;
-
-				label.text = formatString;
-
-				if (GetTime() == "00:00")
-				{
-					gc.gameOver = true;
-				}
-			}
-		}
-		else
+		if(!tb.isTimeBonus)
 		{
 			if(gc.numEquationsSolved < 10)
 				timeInSeconds -= Time.deltaTime;
-			else if(gc.numEquationsSolved >= 10 && gc.numEquationsSolved < 20)
+			else if(gc.numEquationsSolved < 20)
 				timeInSeconds -= Time.deltaTime * 2;
-			else if(gc.numEquationsSolved >= 20 && gc.numEquationsSolved < 30)
+			else if(gc.numEquationsSolved < 30)
 				timeInSeconds -= Time.deltaTime * 5;
-			else if(gc.numEquationsSolved >= 40 && gc.numEquationsSolved > 40)
+			else if(gc.numEquationsSolved > 40)
 				timeInSeconds -= Time.deltaTime * 8;
 
 			seconds = (int)timeInSeconds % 60;
@@ -68,14 +38,38 @@ public class Timer : MonoBehaviour
 			
 			formatString = string.Format("{0:00}:{1:00}", minutes, seconds); 
 			//timerTexture.text = formatString;
-			
+
 			label.text = formatString;
-			
+
 			if (GetTime() == "00:00")
 			{
 				gc.gameOver = true;
 			}
 		}
+//		else
+//		{
+//			if(gc.numEquationsSolved < 10)
+//				timeInSeconds -= Time.deltaTime;
+//			else if(gc.numEquationsSolved >= 10 && gc.numEquationsSolved < 20)
+//				timeInSeconds -= Time.deltaTime * 2;
+//			else if(gc.numEquationsSolved >= 20 && gc.numEquationsSolved < 30)
+//				timeInSeconds -= Time.deltaTime * 5;
+//			else if(gc.numEquationsSolved >= 40 && gc.numEquationsSolved > 40)
+//				timeInSeconds -= Time.deltaTime * 8;
+//
+//			seconds = (int)timeInSeconds % 60;
+//			minutes = (int)timeInSeconds / 60; 
+//			
+//			formatString = string.Format("{0:00}:{1:00}", minutes, seconds); 
+//			//timerTexture.text = formatString;
+//			
+//			label.text = formatString;
+//			
+//			if (GetTime() == "00:00")
+//			{
+//				gc.gameOver = true;
+//			}
+//		}
 	}
 	
 	public int GetMinutes()

@@ -37,6 +37,8 @@ public class GameController : MonoBehaviour
 	ScavengerHuntArea scavHunt;
 	Timer timer;
 
+	Bonus bonus;
+
 	void Start()
 	{
 		gameOver = false;
@@ -45,6 +47,9 @@ public class GameController : MonoBehaviour
 		scavHunt = GameObject.Find("ScavengerHuntPanel").GetComponent<ScavengerHuntArea>();
 		scavHunt.populateScavHunt(numSHSymbols);
 		timer = GameObject.Find("Timer").GetComponent<Timer>();
+		bonus = GameObject.Find("ScoreTimerEquationHistoryPanel").GetComponent<Bonus>();
+
+		bonus.pickRandomBonus();
 
 		ScoreLabel.text = "0";
 	}
@@ -58,19 +63,18 @@ public class GameController : MonoBehaviour
 		{
 			score += 1;
 		}
-//		if(Input.GetKeyDown(KeyCode.Escape) && !paused)
-//		{
-//			paused = true;
-//			Time.timeScale = 0;
-//			NGUITools.SetActive(PausePanel, true);
-//		}
 		else if(gameOver)
 		{
-			bestScore = PlayerPrefs.GetInt("Score");
+			bestScore = PlayerPrefs.GetInt("HighScore");
 			if (score > bestScore)
-				PlayerPrefs.SetInt("HighScore", score);
-			else
+			{
+				bestScore = score;
 				PlayerPrefs.SetInt("HighScore", bestScore);
+			}
+//			else
+//			{
+//				PlayerPrefs.SetInt("HighScore", bestScore);
+//			}
 
 			Application.LoadLevel("GameOver");
 		}
@@ -149,12 +153,14 @@ public class GameController : MonoBehaviour
 
 		scavHunt.populateScavHunt(numSHSymbols);
 		generateRandomStartingValue();
+		bonus.pickRandomBonus();
 	}
 
 	void addToTimerAndScore()
 	{
 		Transform tr = null;
 		int slotCounter = 0;
+
 		for(int i = 0; i < slots.Count; i++)
 		{
 			tr = slots[i].transform.GetComponentsInChildren<Transform>().FirstOrDefault(t => t.name.Contains("shElement"));
@@ -163,10 +169,11 @@ public class GameController : MonoBehaviour
 		}
 
 		UILabel timeToAddVal = GameObject.Find ("secondsVal").GetComponent<UILabel>();
-	
-		Bonus scoreBonus = null;
-		if(GameObject.FindGameObjectWithTag("ScoreMultiplier") != null)
-			scoreBonus = GameObject.FindGameObjectWithTag("ScoreMultiplier").GetComponent<Bonus>();
+
+		if(_equation.Contains(bonus.selectedBonus))
+		{
+			score += 50;
+		}
 
 		switch(slotCounter)
 		{
@@ -174,10 +181,10 @@ public class GameController : MonoBehaviour
 			case 3:
 				timer.timeInSeconds += 22;
 				timeToAddVal.text = "+" + 20;
-				if(scoreBonus != null && scoreBonus.isScoreBonus)
+				if(bonus.isScoreBonus)
 				{
 					//score += 10 * scoreBonus.multiplier;
-					tempScore = score + 10 * scoreBonus.multiplier;
+					tempScore = score + 10 * bonus.multiplier;
 					delayMod = 8;
 				}
 				else
@@ -191,10 +198,10 @@ public class GameController : MonoBehaviour
 			case 5:
 				timer.timeInSeconds += 36;
 				timeToAddVal.text = "+" + 35;
-				if(scoreBonus != null && scoreBonus.isScoreBonus)
+				if(bonus.isScoreBonus)
 				{
 					//score += 50 * scoreBonus.multiplier;
-					tempScore = score + 50 * scoreBonus.multiplier;
+					tempScore = score + 50 * bonus.multiplier;
 					delayMod = 1;
 				}
 				else
@@ -208,10 +215,10 @@ public class GameController : MonoBehaviour
 			case 7:
 				timer.timeInSeconds += 62;
 				timeToAddVal.text = "+" + 60;
-				if(scoreBonus != null && scoreBonus.isScoreBonus)
+				if(bonus.isScoreBonus)
 				{
 					//score += 100 * scoreBonus.multiplier;
-					tempScore = score + 100 * scoreBonus.multiplier;
+					tempScore = score + 100 * bonus.multiplier;
 					delayMod = 1;
 				}
 				else
@@ -222,6 +229,7 @@ public class GameController : MonoBehaviour
 				}
 				break;
 		}
+
 	}
 
 	void clearEquation()

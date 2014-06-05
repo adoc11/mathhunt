@@ -144,6 +144,32 @@ MonoBehaviour:
     paddingRight: 0
     paddingTop: 0
     paddingBottom: 0
+  - name: scoreMultiplier
+    x: 0
+    y: 536
+    width: 222
+    height: 227
+    borderLeft: 0
+    borderRight: 0
+    borderTop: 0
+    borderBottom: 0
+    paddingLeft: 0
+    paddingRight: 0
+    paddingTop: 0
+    paddingBottom: 0
+  - name: timeBonus
+    x: 223
+    y: 536
+    width: 222
+    height: 227
+    borderLeft: 0
+    borderRight: 0
+    borderTop: 0
+    borderBottom: 0
+    paddingLeft: 0
+    paddingRight: 0
+    paddingTop: 0
+    paddingBottom: 0
   - name: title_screen_Math_Hunt_equal
     x: 1797
     y: 1616
@@ -159,7 +185,7 @@ MonoBehaviour:
     paddingBottom: 0
   - name: title_screen_Math_Hunt_number2
     x: 0
-    y: 544
+    y: 316
     width: 216
     height: 219
     borderLeft: 0
@@ -171,8 +197,8 @@ MonoBehaviour:
     paddingTop: 0
     paddingBottom: 0
   - name: title_screen_Math_Hunt_number4
-    x: 181
-    y: 327
+    x: 344
+    y: 99
     width: 162
     height: 216
     borderLeft: 0
@@ -184,8 +210,8 @@ MonoBehaviour:
     paddingTop: 0
     paddingBottom: 0
   - name: title_screen_Math_Hunt_number7
-    x: 0
-    y: 66
+    x: 181
+    y: 65
     width: 162
     height: 250
     borderLeft: 0
@@ -198,7 +224,7 @@ MonoBehaviour:
     paddingBottom: 0
   - name: title_screen_Math_Hunt_number9
     x: 0
-    y: 317
+    y: 89
     width: 180
     height: 226
     borderLeft: 0
@@ -211,7 +237,7 @@ MonoBehaviour:
     paddingBottom: 0
   - name: title_screen_Math_Hunt_plus
     x: 217
-    y: 551
+    y: 323
     width: 218
     height: 212
     borderLeft: 0

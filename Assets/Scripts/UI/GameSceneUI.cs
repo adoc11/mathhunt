@@ -45,16 +45,25 @@ public class GameSceneUI : MonoBehaviour
 	{
 		ScavengerHuntArea scavHunt = GameObject.Find("ScavengerHuntPanel").GetComponent<ScavengerHuntArea>();
 
+		Timer timer = GameObject.Find("Timer").GetComponent<Timer>();
+
+		if(timer.timeInSeconds > 10)
+			timer.timeInSeconds -= 10;
+
+		Bonus bonus = GameObject.Find("ScoreTimerEquationHistoryPanel").GetComponent<Bonus>();
+
 		if(GameObject.Find("bonusTimer") != null)
 		{
 			BonusTimer bt = GameObject.Find("bonusTimer").GetComponent<BonusTimer>();
 			bt.timeInSeconds = 0;
+			bt.bonusOver = true;
 		}
 
-		Timer timer = GameObject.Find("Timer").GetComponent<Timer>();
-		timer.timeInSeconds -= 10;
+		bonus.pickRandomBonus();
 
 		scavHunt.populateScavHunt(40);
+
+
 	}
 
 	public void OnMainMenuClick()
