@@ -3543,7 +3543,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 414093049}
-  m_LocalRotation: {x: 0, y: 0, z: .0171789248, w: .999852419}
+  m_LocalRotation: {x: 0, y: 0, z: .0171789266, w: .999852479}
   m_LocalPosition: {x: 10.7436523, y: 0, z: 0}
   m_LocalScale: {x: .999899924, y: .999900043, z: .999899983}
   m_Children: []
@@ -5248,12 +5248,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bonusTimer: {fileID: 1025742012}
-  timeBonusPrefab: {fileID: 2081573130}
-  scoreBonusPrefab: {fileID: 1402959705}
+  timeBonusPrefab: {fileID: 0}
+  scoreBonusPrefab: {fileID: 0}
   multiplier: 2
   isTimeBonus: 0
   isScoreBonus: 0
-  bonusLabel: {fileID: 1464556302}
+  bonusLabel: {fileID: 0}
   selectedBonus: 
 --- !u!1 &577059593
 GameObject:
@@ -11465,11 +11465,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f9f06b8d6921c44bb180cb88428f437, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  muteButton: {fileID: 1596240561}
-  soundButton: {fileID: 605602692}
-  PausePanel: {fileID: 1137286434}
-  pauseButton: {fileID: 591185883}
-  resumeButton: {fileID: 1365206571}
+  muteButton: {fileID: 0}
+  soundButton: {fileID: 0}
+  PausePanel: {fileID: 0}
+  pauseButton: {fileID: 0}
+  resumeButton: {fileID: 0}
 --- !u!1 &1036148274
 GameObject:
   m_ObjectHideFlags: 0
@@ -22521,7 +22521,7 @@ Transform:
   m_GameObject: {fileID: 2051287727}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: .00333333341, y: .00333333341, z: .00333333341}
+  m_LocalScale: {x: .00508905854, y: .00508905854, z: .00508905854}
   m_Children:
   - {fileID: 881393714}
   - {fileID: 1030451528}

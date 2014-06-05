@@ -25,7 +25,7 @@ public class GameController : MonoBehaviour
 	List<GameObject> slots;
 	string _equation; 
 	Vector3 messagePos;
-	char[] _operators = new [] { '+', '-', 'x', '/', '√', '^' }; 
+	char[] _operators = {'+', '-', 'x', '/', '√', '^'}; 
 	bool runDisplayTimeMessage = false;
 	int tempScore = 0;
 	int delay = 0;
