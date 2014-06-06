@@ -1190,7 +1190,7 @@ MonoBehaviour:
     target: {fileID: 0}
     relative: 1
     absolute: 0
-  mColor: {r: .134083062, g: .911764681, b: 0, a: 1}
+  mColor: {r: 0, g: 0, b: 0, a: 1}
   mPivot: 3
   mWidth: 16
   mHeight: 50
@@ -5162,6 +5162,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1972005979}
+  - {fileID: 1215020427}
   - {fileID: 1464556301}
   - {fileID: 1579875269}
   - {fileID: 1857097167}
@@ -5171,7 +5172,6 @@ Transform:
   - {fileID: 1402959706}
   - {fileID: 226765429}
   - {fileID: 1009327288}
-  - {fileID: 1215020427}
   - {fileID: 1798838471}
   - {fileID: 1224246681}
   - {fileID: 2081573131}
@@ -5248,12 +5248,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bonusTimer: {fileID: 1025742012}
-  timeBonusPrefab: {fileID: 0}
-  scoreBonusPrefab: {fileID: 0}
+  timeBonusPrefab: {fileID: 2081573130}
+  scoreBonusPrefab: {fileID: 1402959705}
   multiplier: 2
   isTimeBonus: 0
   isScoreBonus: 0
-  bonusLabel: {fileID: 0}
+  bonusLabel: {fileID: 1464556302}
   selectedBonus: 
 --- !u!1 &577059593
 GameObject:
@@ -6937,7 +6937,7 @@ MonoBehaviour:
     target: {fileID: 0}
     relative: 1
     absolute: 0
-  mColor: {r: .852941155, g: 1, b: 0, a: 1}
+  mColor: {r: 1, g: 1, b: 0, a: 1}
   mPivot: 3
   mWidth: 46
   mHeight: 50
@@ -6945,7 +6945,7 @@ MonoBehaviour:
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
   keepAspectRatio: 0
-  aspectRatio: 1.44000006
+  aspectRatio: .920000017
   keepCrispWhenShrunk: 1
   mTrueTypeFont: {fileID: 12800000, guid: 92589e9707261414d9effde729ba35b2, type: 3}
   mFont: {fileID: 0}
@@ -7116,7 +7116,7 @@ MonoBehaviour:
     target: {fileID: 0}
     relative: 1
     absolute: 0
-  mColor: {r: 1, g: 0, b: 0, a: 1}
+  mColor: {r: 0, g: 0, b: 1, a: 1}
   mPivot: 3
   mWidth: 28
   mHeight: 50
@@ -9666,7 +9666,7 @@ MonoBehaviour:
     target: {fileID: 0}
     relative: 1
     absolute: 0
-  mColor: {r: 0, g: .861267149, b: .992647052, a: 1}
+  mColor: {r: 1, g: 0, b: 1, a: 1}
   mPivot: 3
   mWidth: 32
   mHeight: 50
@@ -10062,7 +10062,7 @@ MonoBehaviour:
     target: {fileID: 0}
     relative: 1
     absolute: 0
-  mColor: {r: .911764681, g: .911764681, b: .911764681, a: 1}
+  mColor: {r: 1, g: 0, b: 0, a: 1}
   mPivot: 3
   mWidth: 38
   mHeight: 50
@@ -10966,7 +10966,7 @@ MonoBehaviour:
     target: {fileID: 0}
     relative: 1
     absolute: 0
-  mColor: {r: 1, g: 1, b: 1, a: 1}
+  mColor: {r: .198529422, g: 1, b: .92928195, a: 1}
   mPivot: 4
   mWidth: 660
   mHeight: 390
@@ -11270,6 +11270,7 @@ GameObject:
   - 4: {fileID: 1025742013}
   - 114: {fileID: 1025742015}
   - 114: {fileID: 1025742014}
+  - 82: {fileID: 1025742016}
   m_Layer: 8
   m_Name: bonusTimer
   m_TagString: Untagged
@@ -11364,6 +11365,64 @@ MonoBehaviour:
   mMaxLineHeight: 0
   mLineWidth: 0
   mMultiline: 1
+--- !u!82 &1025742016
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1025742012}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_audioClip: {fileID: 8300000, guid: bf32baf082410bf47a89c5b82d8a59eb, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: .0500000007
+  m_Pitch: 1
+  Loop: 1
+  Mute: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
 --- !u!1 &1030451527
 GameObject:
   m_ObjectHideFlags: 0
@@ -12899,7 +12958,7 @@ MonoBehaviour:
   alwaysOnScreen: 0
   anchorOffset: 0
   renderQueue: 0
-  startingRenderQueue: 3010
+  startingRenderQueue: 3011
   mAlpha: 1
   mClipping: 0
   mClipRange: {x: 0, y: 0, z: 300, w: 200}
@@ -16617,7 +16676,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1464556300}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -349.000031, y: 6.87011814, z: 0}
+  m_LocalPosition: {x: -350, y: -9, z: 0}
   m_LocalScale: {x: 1.30051506, y: 1.30051506, z: 1.30051506}
   m_Children: []
   m_Father: {fileID: 565230594}
@@ -16650,13 +16709,13 @@ MonoBehaviour:
     absolute: 0
   mColor: {r: 0, g: 0, b: 0, a: 1}
   mPivot: 4
-  mWidth: 76
-  mHeight: 54
+  mWidth: 74
+  mHeight: 44
   mDepth: 2
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
   keepAspectRatio: 0
-  aspectRatio: 1.4074074
+  aspectRatio: 1.68181813
   keepCrispWhenShrunk: 1
   mTrueTypeFont: {fileID: 12800000, guid: 92589e9707261414d9effde729ba35b2, type: 3}
   mFont: {fileID: 0}
@@ -17656,7 +17715,7 @@ MonoBehaviour:
   keepCrispWhenShrunk: 1
   mTrueTypeFont: {fileID: 12800000, guid: 74aeea0dfd9ff374496bd33f8f4e0a28, type: 3}
   mFont: {fileID: 0}
-  mText: "Power. \n2 ^ 2 = 4 "
+  mText: "Power. \n4 ^ 2 = 16 "
   mFontSize: 20
   mFontStyle: 0
   mAlignment: 0
@@ -18262,7 +18321,7 @@ MonoBehaviour:
     target: {fileID: 0}
     relative: 1
     absolute: 0
-  mColor: {r: .860294104, g: 0, b: .721128941, a: 1}
+  mColor: {r: 0, g: 1, b: 0, a: 1}
   mPivot: 3
   mWidth: 26
   mHeight: 50
@@ -22521,7 +22580,7 @@ Transform:
   m_GameObject: {fileID: 2051287727}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: .00508905854, y: .00508905854, z: .00508905854}
+  m_LocalScale: {x: .00333333341, y: .00333333341, z: .00333333341}
   m_Children:
   - {fileID: 881393714}
   - {fileID: 1030451528}
@@ -22763,7 +22822,7 @@ AudioSource:
   serializedVersion: 3
   m_audioClip: {fileID: 8300000, guid: 37b5310169ba41d41bc1b5861f09ad35, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: .5
+  m_Volume: .400000006
   m_Pitch: 1
   Loop: 1
   Mute: 0

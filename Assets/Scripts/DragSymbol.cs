@@ -32,17 +32,7 @@ public class DragSymbol : UIDragDropItem {
 
 				gameObject.transform.localRotation = Quaternion.identity;
 			}
-
-//			if((gameObject.tag == "TimeBonus" || gameObject.tag == "ScoreMultiplier") && surface.gameObject.name != "scavengerHuntBoundingBox")
-//			{
-//				if(surface.gameObject.name != "bonusDrop")
-//				{
-//					surface = null;
-//					gameObject.transform.position = objectPos;
-//				}
-//			}
-
-
+		
 			if (gameObject.name.Contains("shElement"))
 			{
 				if(surface.gameObject.name == "bonusDrop" || surface.gameObject.name.Contains("shElement") || surface.gameObject.name.Contains("symbol"))
@@ -66,16 +56,6 @@ public class DragSymbol : UIDragDropItem {
 			gameObject.transform.position = objectPos;
 		}
 
-		
-//		if((gameObject.tag == "TimeBonus" || gameObject.tag == "ScoreMultiplier") && surface != null && surface.gameObject.name == "bonusDrop")
-//		{
-//			Bonus bonus = gameObject.GetComponent<Bonus>();
-//			bonus.applyBonus(gameObject.tag);
-//			UISprite bonusSprite = gameObject.GetComponent<UISprite>();
-//			bonusSprite.alpha = 255;
-//
-//			gameObject.collider.enabled = false;
-//		}
 
 		base.OnDragDropRelease(surface);
 
@@ -86,10 +66,6 @@ public class DragSymbol : UIDragDropItem {
 		audio.Play();
 
 		if(gc.validateEquation())
-		{
 			gc.equationSolved = true;
-
-		}
-		
 	}
 }

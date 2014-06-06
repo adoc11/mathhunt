@@ -71,10 +71,6 @@ public class GameController : MonoBehaviour
 				bestScore = score;
 				PlayerPrefs.SetInt("HighScore", bestScore);
 			}
-//			else
-//			{
-//				PlayerPrefs.SetInt("HighScore", bestScore);
-//			}
 
 			Application.LoadLevel("GameOver");
 		}
@@ -102,8 +98,9 @@ public class GameController : MonoBehaviour
 				if(tr != null)
 				{
 					mp.color = new Color(0.0f, 1.0f, 0.0f, .1f);
+					DragSymbol ds = tr.gameObject.GetComponent<DragSymbol>();
+					ds.enabled = false;
 				}
-
 			}
 
 			messagePos = addToTimerMessage.transform.localPosition;
@@ -170,7 +167,7 @@ public class GameController : MonoBehaviour
 
 		UILabel timeToAddVal = GameObject.Find ("secondsVal").GetComponent<UILabel>();
 
-		if(_equation.Contains(bonus.selectedBonus))
+		if(_equation.Contains(bonus.selectedBonus) && bonus.selectedBonus != "")
 		{
 			score += 50;
 		}
